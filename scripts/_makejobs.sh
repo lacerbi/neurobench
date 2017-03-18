@@ -1,16 +1,17 @@
 #!/bin/sh
 echo "Usage: makejobs job# [file#]"
 
-source ../setroot.sh
+PROJECT="neurobench"
+#source ${HOME}/MATLAB/setroot.sh
 
 module purge
 #. /etc/profile.d/modules.sh
 
 # Use Intel compiler
 module load matlab
-source ${ROOTPATH}/MATLAB/setpath.sh
+source ${HOME}/MATLAB/setpath.sh
 export MATLABPATH=${MATLABPATH}
-WORKDIR="/scratch/la67/BenchMark"
+WORKDIR="${SCRATCH}/${PROJECT}"
 
 if [ -z "${2}" ]; 
 	then DIRID=${1}; 
@@ -40,8 +41,8 @@ ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','patternsearch','particlesw
 ALGOSET="'base'"
 IDS="'1:25'"
 
-BPSALGO_1="{'bps@realmads8'}"
-BPSALGO_2="{'bps@realmads7'}"
+BPSALGO_1="{'bps@base'}"
+BPSALGO_2="{'bads@base'}"
 
 
 case "${1}" in
@@ -246,6 +247,7 @@ esac
 echo "Job items: ${PROBSET},${PROBS},${DIMS},${NOISE},${ALGOS},${ALGOSET},${IDS}"
 
 cat<<EOF | matlab -nodisplay
+addpath(genpath('${HOME}/${PROJECT}'));
 currentDir=cd;
 cd('${WORKDIR}');
 benchmark_joblist(${FILENAME},'run${DIRID}',${PROBSET},${PROBS},${DIMS},${NOISE},${ALGOS},${ALGOSET},${IDS});
