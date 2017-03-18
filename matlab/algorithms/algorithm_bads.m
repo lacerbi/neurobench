@@ -1,0 +1,48 @@
+function [history,x,fval,algoptions] = algorithm_bads(algo,algoset,probstruct)
+
+algoptions = bps('defaults');                   % Get default settings
+
+algoptions.MaxFunEvals = probstruct.MaxFunEvals;
+algoptions.TolFun = probstruct.TolFun;          % Standard TolFun
+algoptions.TrueMinX = probstruct.TrueMinX;
+algoptions.OptimToolbox = [];                    % Use Optimization Toolbox
+% algoptions.Plot = 'scatter';
+
+switch algoset
+    case {0,'debug'}; algoset = 'debug'; algoptions.Debug = 1; algoptions.Plot = 'scatter';
+    case {1,'base'}; algoset = 'base';           % Use defaults
+    case {2,'robust'}; algoset = 'robust'; algoptions.ImprovementQuantile = 0.25;
+    case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
+    otherwise
+        error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
+end
+
+% Increase base noise with noisy functions
+if ~isempty(probstruct.Noise) || probstruct.IntrinsicNoisy
+    algoptions.UncertaintyHandling = 'on';
+    NoiseEstimate = probstruct.NoiseEstimate;
+    if isempty(NoiseEstimate); NoiseEstimate = 1; end    
+    algoptions.NoiseSize = NoiseEstimate;
+end
+
+% Variables with periodic boundary
+if isfield(probstruct, 'PeriodicVars')
+    algoptions.PeriodicVars = probstruct.PeriodicVars;
+end
+
+% Variables are already rescaled by BENCHMARK
+algoptions.NonlinearScaling = 0;
+
+PLB = probstruct.InitRange(1,:);
+PUB = probstruct.InitRange(2,:);
+LB = probstruct.LowerBound;
+UB = probstruct.UpperBound;
+x0 = probstruct.InitPoint;
+D = size(x0,2);
+
+if newflag
+    [x,fval,exitFlag,output] = ...
+        bads(@(x) benchmark_func(x,probstruct),x0,LB,UB,PLB,PUB,algoptions);
+end
+history = benchmark_func(); % Retrieve history
+history.scratch = output;

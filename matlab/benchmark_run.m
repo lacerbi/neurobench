@@ -1,5 +1,7 @@
 function [probstruct,history] = benchmark_run(probset,prob,subprob,noise,algo,idlist,options)
-%BENCHMARK_RUN
+%BENCHMARK_RUN Run optimization benchmark.
+
+% Luigi Acerbi 2017
 
 clear functions;
 
@@ -36,15 +38,7 @@ if isempty(options.PathDirectory)
 end
 
 % Add sub-directories to path
-for subd = {'algorithms','problems','utils'}
-    addpath([options.PathDirectory filesep() subd{:}]);
-end
-problemsd = dir([options.PathDirectory filesep() 'problems' filesep() '*'])';
-for subd = problemsd
-    if subd.isdir && ~strcmp(subd.name,'.') && ~strcmp(subd.name,'..')
-        addpath([options.PathDirectory filesep() 'problems' filesep subd.name]);
-    end
-end
+addpath(genpath(options.PathDirectory));
 
 % Optimization algorithm settings
 setidx = find(algo == charsep,1);
@@ -60,7 +54,7 @@ options.AlgorithmSetup = algoset;
 % Noise setting (lo-me-hi, or nothing)
 if isempty(noise); noisestring = []; else noisestring = [charsep noise 'noise']; end
 
-scratch = 0;
+scratch_flag = false;
 
 % Loop over optimization runs
 for iRun = 1:length(idlist)
@@ -180,12 +174,12 @@ for iRun = 1:length(idlist)
     history{iRun}.Output.fsd = fse;    
     history{iRun}.Output.t = t;
     
-    if isfield(history{iRun},'scratch'); scratch = 1; end
+    if isfield(history{iRun},'scratch'); scratch_flag = true; end
 end
 
 % Save optimization results
 filename = [options.OutputDataPrefix algo charsep algoset charsep num2str(idlist(1)) '.mat'];
-if scratch  % Remove scratch field from saved files, keep it for output
+if scratch_flag  % Remove scratch field from saved files, keep it for output
     temp = history;
     for iRun = 1:numel(history)
         history{iRun} = rmfield(history{iRun},'scratch');
