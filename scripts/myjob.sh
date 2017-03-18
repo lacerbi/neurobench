@@ -8,7 +8,7 @@ module load matlab
 export MATLABPATH=${MATLABPATH}:/${HOME}/${PROJECT}/matlab:${HOME}/MATLAB
 source ${HOME}/MATLAB/setpath.sh
 
-PROBLEMDIR="${HOME}/neurobench-problem"
+PROBLEMDIR="${HOME}/neurobench-problems"
 
 #Check if running as an array job
 if [[ ! -z "$PBS_ARRAYID" ]]; then
