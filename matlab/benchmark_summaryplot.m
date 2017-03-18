@@ -3,6 +3,8 @@ function summary = benchmark_summaryplot(benchdata,fieldname,summary,options)
 %
 %   See also BENCHMARK_PLOT.
 
+% Luigi Acerbi 2016
+
 if nargin < 2; fieldname = []; end
 if nargin < 3; summary = []; end
 if nargin < 4; options = []; end

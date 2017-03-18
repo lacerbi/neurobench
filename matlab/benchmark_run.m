@@ -56,6 +56,10 @@ if isempty(noise); noisestring = []; else noisestring = [charsep noise 'noise'];
 
 scratch_flag = false;
 
+% Test processor speed (for baseline)
+speedtest = [];
+if options.SpeedTests > 0; speedtest.start = bench(options.SpeedTests); end
+
 % Loop over optimization runs
 for iRun = 1:length(idlist)
     clear benchmark_func;    % Clear persistent variables
@@ -177,6 +181,9 @@ for iRun = 1:length(idlist)
     if isfield(history{iRun},'scratch'); scratch_flag = true; end
 end
 
+% Test processor speed (for baseline)
+if options.SpeedTests > 0; speedtest.end = bench(options.SpeedTests); end
+
 % Save optimization results
 filename = [options.OutputDataPrefix algo charsep algoset charsep num2str(idlist(1)) '.mat'];
 if scratch_flag  % Remove scratch field from saved files, keep it for output
@@ -184,11 +191,11 @@ if scratch_flag  % Remove scratch field from saved files, keep it for output
     for iRun = 1:numel(history)
         history{iRun} = rmfield(history{iRun},'scratch');
     end
-    save(filename,'history');
+    save(filename,'history','speedtest');
     history = temp;
     clear temp;
 else
-    save(filename,'history');    
+    save(filename,'history','speedtest');    
 end
 
 % Save algorithm options
@@ -241,3 +248,4 @@ if size(x,1) > 1
 else
     index = [];
 end
+%--------------------------------------------------------------------------

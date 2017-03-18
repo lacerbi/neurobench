@@ -27,6 +27,8 @@ function benchdata = benchmark_plot(varargin)
 %
 %   See also BENCHMARK_RUN.
 
+% Luigi Acerbi 2016
+
 % Base options
 defopts.BestOutOf = 1;
 defopts.ErrorBar = [];

@@ -18,6 +18,7 @@ switch lower(type)
         defaults.StartFromMinX = 0;      % Start from guessed min X?
         defaults.MaxFunEvalMultiplier = 1;      % Increase # func evals
         defaults.StopSuccessfulRuns = 1; % Stop runs when successful
+        defaults.SpeedTests = 10;        % Iterations of speed tests
     
         defaults.LineStyle = {'-','-','-','-','-.','-.','-.','-.','-.','-.','-.','-','-.'};
         % defaults.LineStyle = {'-','-.','-','-','-','-','-','-','-','-'};
