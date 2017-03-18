@@ -18,7 +18,7 @@ problist{70} = 'jing_temporalsummation';
 % Initialize problem structure
 if ischar(subprob); S = extractnum(subprob); else S = subprob; end
 
-probstruct = initprob(prob,problist,'ccn15',['S' num2str(S)],id);
+probstruct = initprob(prob,problist,'ccn17',['S' num2str(S)],id);
 probstruct.Title = probstruct.Prob;
 
 % Setup problem
