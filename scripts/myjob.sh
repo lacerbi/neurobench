@@ -8,6 +8,8 @@ module load matlab
 export MATLABPATH=${MATLABPATH}:/${HOME}/${PROJECT}/matlab:${HOME}/MATLAB
 source ${HOME}/MATLAB/setpath.sh
 
+PROBLEMDIR="${HOME}/neurobench-problem"
+
 #Check if running as an array job
 if [[ ! -z "$PBS_ARRAYID" ]]; then
         IID=${PBS_ARRAYID}
@@ -29,7 +31,7 @@ echo ${PARAMS} ${VERBOSE} ${USEPRIOR}
 cat<<EOF | matlab -nodisplay
 %addpath(genpath('${HOME}/MATLAB'));
 cd('${WORKDIR}');
-options=struct('RootDirectory','${WORKDIR}','Display',${VERBOSE},'TolFun',${TOLFUN},'MaxFunEvalMultiplier',${MAXFUNMULT},'StopSuccessfulRuns',${STOPSUCCRUNS});
+options=struct('RootDirectory','${WORKDIR}','Display',${VERBOSE},'TolFun',${TOLFUN},'MaxFunEvalMultiplier',${MAXFUNMULT},'StopSuccessfulRuns',${STOPSUCCRUNS},'ProblemDirectory','${PROBLEMDIR}');
 ${PARAMS}
 benchmark_run(${PARAMS},options);
 EOF
