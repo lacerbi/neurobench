@@ -39,6 +39,9 @@ end
 
 % Add sub-directories to path
 addpath(genpath(options.PathDirectory));
+if ~isempty(options.ProblemDirectory)
+    addpath(genpath(options.ProblemDirectory));    
+end
 
 % Optimization algorithm settings
 setidx = find(algo == charsep,1);

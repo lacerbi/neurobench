@@ -1,9 +1,7 @@
-function probstruct = problem_ccn15(prob,subprob,noise,id,options)
+function probstruct = problem_ccn17(prob,subprob,noise,id,options)
 
 % Problem names (ordered)
-problist{1}  = 'trevor_unimodal';
-problist{2}  = 'trevor_bimodal';
-problist{3}  = 'trevor_full_bimodal';
+problist{1}  = 'visvest_joint';
 problist{10} = 'aspen_wrm';
 problist{20} = 'xuan';
 problist{30} = 'robbe';
@@ -22,20 +20,22 @@ if ischar(subprob); S = extractnum(subprob); else S = subprob; end
 
 probstruct = initprob(prob,problist,'ccn15',['S' num2str(S)],id);
 probstruct.Title = probstruct.Prob;
-% [~,probstruct.Title] = ccn15_functions(zeros(1,2),probstruct.Number);
-% probstruct.func = ['@(x,probstruct) ccn15_functions(x,' num2str(probstruct.Number) ', probstruct)'];
 
 % Setup problem
 switch probstruct.Number
     case 1
-        % 1-15 full Bayesian, 16-30 full Bayesian with constant likelihood,
-        % 31-45 full Bayesian with constant sensory noise
-        temp = load('trevor-unimodal.mat'); 
-        mfit = temp.mfit{S};
-                
-        mfit.prefix = 'CueBMS';
+        % Models: 1-11 Fixed, 12-22 Bayesian
+        temp = load('visvest-joint-mfits.mat');
+        nSubjs = numel(temp.joint_bay);                
+        nid = mod(S-1,nSubjs) + 1;
+        modelnum = floor((S-1)/nSubjs) + 1;
+        switch modelnum
+            case 1; mfit = temp.joint_fix{nid};
+            case 2; mfit = temp.joint_bay{nid};
+        end
+        mfit.project = 'VestBMS';
         probstruct.mfit = mfit;
-        probstruct.Family = 'trevor';
+        probstruct.Family = 'visvest';
         
     case 2
         temp = load('trevor-bimodal.mat');
@@ -94,9 +94,9 @@ end
 
 
 switch probstruct.Family
-    case 'trevor'
+    case 'visvest'
         probstruct.InitRange = [mfit.mp.bounds.RLB(:)'; mfit.mp.bounds.RUB(:)'];
-        probstruct.func = ['@(x_,probstruct_) trevor_nLL(x_, probstruct_)'];
+        probstruct.func = ['@(x_,probstruct_) visvest_nLL(x_, probstruct_)'];
         probstruct.Precision = 1; % Standard precision
 
         probstruct.LowerBound = mfit.mp.bounds.LB(:)';
