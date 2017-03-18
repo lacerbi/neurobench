@@ -1,0 +1,6 @@
+function f = ackley( x )
+    f = -20 * exp(-0.2 * sqrt( sum(x .* x)/ numel(x))) ...
+        - exp(sum(cos(2*pi*x)) / numel(x)) ...
+        + 20 + 2.7182818284590452353602874713526625;
+end
+
