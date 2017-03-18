@@ -76,7 +76,7 @@ if isempty(history)     % First function call, initialize log
     history.FuncTimeTemp = 0;   % Temporary variable to store function time
     history.MinScores = NaN(1,nmax);
     history.BestX = NaN(1,history.D);
-    if isfield(history,'Thresholds')
+    if isfield(probstruct,'Thresholds')
         history.Thresholds = probstruct.Thresholds;
         history.ThresholdsHit = Inf(1, numel(history.Thresholds));
         history.ThresholdsHitPerIter = Inf(1, numel(history.Thresholds));
@@ -154,7 +154,7 @@ if ~debug
         history.ElapsedTime(idx) = toc(history.Clock);
         history.MinScores(idx) = history.MinScore;
     end
-    
+        
     % Check thresholds (only if the true minimum is known)
     if ~isempty(history.TrueMinFval) && isfinite(history.TrueMinFval)
         delta = fval - history.TrueMinFval;

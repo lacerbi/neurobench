@@ -40,9 +40,7 @@ UB = probstruct.UpperBound;
 x0 = probstruct.InitPoint;
 D = size(x0,2);
 
-if newflag
-    [x,fval,exitFlag,output] = ...
-        bads(@(x) benchmark_func(x,probstruct),x0,LB,UB,PLB,PUB,algoptions);
-end
+[x,fval,exitFlag,output] = ...
+    bads(@(x) benchmark_func(x,probstruct),x0,LB,UB,PLB,PUB,algoptions);
 history = benchmark_func(); % Retrieve history
 history.scratch = output;
