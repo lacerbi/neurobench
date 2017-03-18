@@ -34,12 +34,13 @@ BBOB09_3="{'f19','f20','f21','f22','f23','f24','f25','f26','f27'}"
 
 # Default job list
 PROBSET="'cec14'"
-DIMS="{'2D','3D','5D','10D','20D'}"
+#DIMS="{'2D','3D','5D','10D','20D'}"
+DIMS="{'3D','6D','10D','15D'}"
 NOISE="'[]'"
-ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global'}"
-#ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','fmincon@actset','patternsearch','particleswarm','cmaes','mcs'}"
+#ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global'}"
+ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','fmincon@actset','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global'}"
 ALGOSET="'base'"
-IDS="'1:25'"
+IDS="'1:30'"
 
 BPSALGO_1="{'bps@base'}"
 BPSALGO_2="{'bads@base'}"
@@ -92,30 +93,30 @@ case "${1}" in
                 ;;
         50)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09_1}
-                IDS="{'1:20'}"
+                IDS="{'1:30'}"
                 ;;
 	51)     PROBSET="{'bbob09'}"
 		PROBS=${BBOB09_2}
-		IDS="{'1:20'}"
+		IDS="{'1:30'}"
 		;;
         52)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09_3}
-                IDS="{'1:20'}"
+                IDS="{'1:30'}"
                 ;;
         53)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
 		ALGOS=$BPSALGO_1
-                IDS="{'1:7','8:14','15:20'}"
+                IDS="{'1:10','11:20','21:30'}"
                 ;;
         54)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
                 ALGOS=$BPSALGO_2
-                IDS="{'1:7','8:14','15:20'}"
+                IDS="{'1:10','11:20','21:30'}"
                 ;;
         55)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
                 ALGOS="{'fmincon@sqp'}"
-                IDS="{'1:20'}"
+                IDS="{'1:30'}"
                 ;;
 	101)	PROBSET="{'ccn15'}"
 		PROBS="{'trevor_unimodal'}"
