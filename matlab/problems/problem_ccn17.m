@@ -4,7 +4,7 @@ function probstruct = problem_ccn17(prob,subprob,noise,id,options)
 problist{1}  = 'visvest_joint';
 problist{10} = 'aspen_wrm';
 problist{20} = 'xuan';
-problist{30} = 'robbe';
+problist{30} = 'goris2014';
 problist{40} = 'bas_sampling';
 problist{51} = 'bas_vstm_bas';
 problist{52} = 'bas_vstm_notbas1';
@@ -55,7 +55,7 @@ switch probstruct.Number
         % nAspen = probstruct.Number - 10;
         probstruct.Family = 'aspen';
         mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN15',filesep,'aspen-wrm']);
+        addpath([mypath,filesep,'CCN17',filesep,'aspen-wrm']);
         % temp = load('aspen-wrm-11-Aug-2015.mat');
         %probstruct.data = temp.data{nAspen}{S};
         % probstruct.TrueMinX = temp.truetheta{nAspen}(S,:); % Minimum must be near here
@@ -63,32 +63,32 @@ switch probstruct.Number
     case 20 % Xuan's social psychology (face gender) experiment        
         probstruct.Family = 'xuan';
         mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN15',filesep,'xuan']);
+        addpath([mypath,filesep,'CCN17',filesep,'xuan']);
         
-    case 30 % Robbe's neural LN-LN model
-        probstruct.Family = 'robbe';
+    case 30 % Robbe Goris neural LN-LN model
+        probstruct.Family = 'goris2014';
         mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN15',filesep,'robbe']);
+        addpath([mypath,filesep,'CCN17',filesep,'goris2014']);
 
     case 40 % Bas's VSTM sampling model
         probstruct.Family = 'bas_sampling';
         mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN15',filesep,'bas-sampling']);
+        addpath([mypath,filesep,'CCN17',filesep,'bas-sampling']);
 
     case {51,52,53,54,55,56} % Bas's inverse sampling project
         probstruct.Family = 'bas_inversesampling';
         mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN15',filesep,'bas-inversesampling']);
+        addpath([mypath,filesep,'CCN17',filesep,'bas-inversesampling']);
         
     case 60 % Weiji's ER
         probstruct.Family = 'weiji_er';
         mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN15',filesep,'weiji-er']);        
+        addpath([mypath,filesep,'CCN17',filesep,'weiji-er']);        
 
     case 70 % Jing's temporal summation model
         probstruct.Family = 'jing_temporalsummation';
         mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN15',filesep,'jing-temporalsummation']);        
+        addpath([mypath,filesep,'CCN17',filesep,'jing-temporalsummation']);        
 
 end
 
@@ -114,8 +114,8 @@ switch probstruct.Family
     case 'xuan' % Xuan's social psychology (face gender) experiment
         probstruct = loadprob(probstruct,'xuan_wrapper',S);        
 
-    case 'robbe' % Robbe's neural LN-LN model
-        probstruct = loadprob(probstruct,'robbe_wrapper',S);
+    case 'goris2014' % Robbe Goris's neural LN-LN model
+        probstruct = loadprob(probstruct,'goris2014_wrapper',S);
         % probstruct.IntrinsicNoisy = 1;      % Noisy problem
         
     case 'bas_sampling'

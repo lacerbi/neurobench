@@ -11,7 +11,7 @@ switch lower(type)
 
         defaults.PathDirectory = [];     % Path of matlab files
         defaults.RootDirectory = [];     % Root of benchmark results directory tree
-        defaults.ProblemDirectory = [];  % Path of benchmark problem files
+        defaults.ProblemDirectory = 'C:/Users/Luigi/Dropbox/Postdoc/BenchMark/problems-data';  % Path of benchmark problem files
         defaults.Display = 'on';         % Level of display
         defaults.ScaleVariables = 'on';  % Center and rescale variables
         defaults.TolFun = 1e-6;          % Required tolerance on function
