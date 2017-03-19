@@ -21,7 +21,7 @@ switch lower(type)
         defaults.StopSuccessfulRuns = 1; % Stop runs when successful
         defaults.SpeedTests = 10;        % Iterations of speed tests
     
-        defaults.LineStyle = {'-','-','-','-','-.','-.','-.','-.','-.','-.','-.','-','-.'};
+        defaults.LineStyle = {'-','-','-','-','-.','-.','-.','-.','-.','-.','-.','-','-.','-','-','-','-','-'};
         % defaults.LineStyle = {'-','-.','-','-','-','-','-','-','-','-'};
         defaults.LineColor = [  ...
             141 211 199; ...            % fminsearch
@@ -35,6 +35,12 @@ switch lower(type)
             159 212 105; ...            % particle swarm
             188 128 189; ...            % cma-es
             212 148 169; ...            % bipop-cma-es            
+            88 198 89; ...              % cma-es
+            112 248 129; ...            % bipop-cma-es            
+            60 220 200; ...            % global
+            170 70 133; ...              % random search
+            41 111 199; ...            % fminsearch
+            151 228 214; ...            % fmincon
             0 0 0 ...                   % bps
             ]/255;
         
