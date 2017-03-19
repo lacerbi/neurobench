@@ -39,6 +39,7 @@ DIMS="{'3D','6D','10D','15D'}"
 NOISE="'[]'"
 #ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global'}"
 ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','fmincon@actset','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global'}"
+BESTALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','patternsearch','particleswarm','cmaes','mcs','bipopcmaes','global'}"
 ALGOSET="'base'"
 IDS="'1:30'"
 
@@ -120,6 +121,7 @@ case "${1}" in
                 ;;
         101)    PROBSET="{'ccn17'}"
                 PROBS="{'visvest_joint'}"
+		ALGOS=$BESTALGOS
                 DIMS="{'S1','S2','S3','S15','S16','S17'}"
                 IDS="{'1:5','6:10','11:15','16:20','21:25','26:30','31:35','36:40','41:45','46:50'}"
                 ;;
@@ -146,37 +148,23 @@ case "${1}" in
 		ALGOS="{'multibayes'}"
                 IDS="{'1:5','6:10','11:15','16:20','21:25','26:30','31:35','36:40','41:45','46:50'}"
                 ;;
-	301)    PROBSET="{'ccn15'}"
-                PROBS="{'xuan'}"
-                DIMS="{'S1','S2','S3'}"
-                #DIMS="{'S2'}"
-                #IDS="{'1:10'}"
-                IDS="{'1:10','11:20','21:30','31:40','41:50','51:60','61:70','71:80','81:90','91:100'}"
+        301)    PROBSET="{'ccn17'}"
+                PROBS="{'goris2014'}"
+                DIMS="{'S1','S2','S3','S4','S5','S6'}"
+		ALGOS=$BESTALGOS
+		#IDS="{'1','2','3','4','5','6','7','8','9','10'}"
+		IDS="{'1:2','3:4','5:6','7:8','9:10','11:12','13:14','15:16','17:18','19:20'}"	
                 ;;
-	302)    PROBSET="{'ccn15'}"
-                PROBS="{'xuan'}"
-                DIMS="{'S1','S2','S3'}"
-		ALGOS="{'bps'}"
-                IDS="{'1:10','11:20','21:30','31:40','41:50','51:60','61:70','71:80','81:90','91:100'}"
-                ;;
-        401)    PROBSET="{'ccn15'}"
-                PROBS="{'robbe'}"
-                DIMS="{'S1','S2','S3'}"
-		ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','patternsearch','particleswarm','cmaes','mcs','bps'}"
-B
-		IDS="{'1','2','3','4','5','6','7','8','9','10'}"
-		#IDS="{'1:5','6:10','11:15','16:20','21:25','26:30','31:35','36:40','41:45','46:50'}"
-                ;;
-        402)    PROBSET="{'ccn15'}"
-                PROBS="{'robbe'}"
-                DIMS="{'S1','S2','S3'}"
+        302)    PROBSET="{'ccn17'}"
+                PROBS="{'goris2014'}"
+                DIMS="{'S1','S2','S3','S4','S5','S6'}"
                 ALGOS=$BPSALGO_1
                 IDS="{'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'}"
                 #IDS="{'1:5','6:10','11:15','16:20','21:25','26:30','31:35','36:40','41:45','46:50'}"
                 ;;
-        403)    PROBSET="{'ccn15'}"
-                PROBS="{'robbe'}"
-                DIMS="{'S1','S2','S3'}"
+        303)    PROBSET="{'ccn17'}"
+                PROBS="{'goris2014'}"
+                DIMS="{'S1','S2','S3','S4','S5','S6'}"
                 ALGOS=$BPSALGO_2
                 IDS="{'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'}"
                 #IDS="{'1:5','6:10','11:15','16:20','21:25','26:30','31:35','36:40','41:45','46:50'}"
