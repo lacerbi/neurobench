@@ -67,13 +67,16 @@ switch probstruct.Family
         
         probstruct = loadprob(probstruct,'aspen_wrm_wrapper',S);
         probstruct.MaxFunEvals = 100*length(probstruct.LowerBound);        
+        probstruct.IntrinsicNoisy = 1;      % Noisy problem
+        
 
     case 'goris2014' % Robbe Goris's neural LN-LN model
         probstruct = loadprob(probstruct,'goris2014_wrapper',S);
-        % probstruct.IntrinsicNoisy = 1;      % Noisy problem
         
     case 'vanopheusden2016' % van Opheusden's Gomoku MCTS model
         probstruct = loadprob(probstruct,'gomoku_wrapper',S);
+        probstruct.MaxFunEvals = 2000;  % Limit fun evals
+        probstruct.IntrinsicNoisy = 1;      % Noisy problem
         
     case 'bas_inversesampling'
         switch (probstruct.Number-50)
