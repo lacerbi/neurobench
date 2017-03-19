@@ -4,7 +4,9 @@ module purge
 #. /etc/profile.d/modules.sh
 
 # Use Intel compiler
-module load matlab
+module load matlab gcc
+export LD_PRELOAD=$GCC_LIB/libstdc++.so 
+
 export MATLABPATH=${MATLABPATH}:/${HOME}/${PROJECT}/matlab:${HOME}/MATLAB
 source ${HOME}/MATLAB/setpath.sh
 
