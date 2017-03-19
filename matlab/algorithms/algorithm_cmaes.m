@@ -20,6 +20,7 @@ algoptions.LogTime      = 0;
 switch algoset
     case {1,'base'}; algoset = 'base'; % Use defaults
     case {2,'active'}; algoset = 'active'; algoptions.CMA.Active = 1;
+    case {100,'noisy'}; algoset = 'noisy'; algoptions.Noise.on = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
 end

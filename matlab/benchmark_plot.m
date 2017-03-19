@@ -40,6 +40,7 @@ defopts.Noisy = 0;
 defopts.Nsamp = 5e3;            % Samples for ERT computation
 defopts.TwoRows = 0;
 defopts.EnhanceLine = 'last';   % Enhance one plotted line
+defopts.UnknownMin = false;     % Force minimum being unknown
 
 % Plotting options
 defopts.YlimMax = 1e3;
@@ -189,7 +190,7 @@ for iFig = 1:nfigs
                         end
                         
                         % Get time ticks
-                        if isnan(history{i}.TrueMinFval)
+                        if isnan(history{i}.TrueMinFval) || options.UnknownMin
                             ynew = history{i}.MinScores;
                             IsMinKnown = false;
                         else
