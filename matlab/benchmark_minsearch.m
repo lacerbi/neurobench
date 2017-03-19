@@ -1,5 +1,5 @@
-function mindata = benchmark_search(probset,prob,subprob,noise,TolFun)
-%BENCHMARK_PLOT Display optimization benchmark results.
+function mindata = benchmark_minsearch(probset,prob,subprob,noise,TolFun)
+%BENCHMARK_MINSEARCH Search global minimum across all optimizations.
 %
 %   BENCHMARK_PLOT(PROBSET,PROB,SUBPROB,NOISE) 
 %   factorially plots optimization benchmark results for the following 
@@ -21,7 +21,7 @@ if ~iscell(subprob); subprob = {subprob}; end
 if ~iscell(noise); noise = {noise}; end
 
 if numel(probset) > 1 || numel(prob) > 1
-    error('BENCHMARK_SEARCH supports only one problem set and problem at a time.');
+    error('BENCHMARK_MINSEARCH supports only one problem set and problem at a time.');
 end
 
 % Sub-problems not specified, list all in subdirectory

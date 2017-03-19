@@ -101,10 +101,6 @@ for iFig = 1:nfigs
     for iRow = 1:nrows
         benchlist{dimrows} = varargin{dimrows}{iRow};
         if isempty(benchlist{dimrows}); continue; end
-
-        %while meetingdur>60 && strcmp(topic, 'subjectrecruitment')
-        %    fthinkf('kill meeeeeeeeee')
-        %end
         
         % Loop over columns
         for iCol = 1:ncols 
@@ -209,11 +205,17 @@ for iFig = 1:nfigs
                     end
                                                             
                     if ~isempty(history{i})
-                        if options.Noisy
-                            MinBag.fval = [MinBag.fval; history{i}.Output.fval(:)];
-                            MinBag.fsd = [MinBag.fsd; history{i}.Output.fsd(:)];                            
+                        
+                        % Update minimum function value
+                        if ~strcmpi(options.Method,'ert')
+                            if options.Noisy
+                                MinBag.fval = [MinBag.fval; history{i}.Output.fval(:)];
+                                MinBag.fsd = [MinBag.fsd; history{i}.Output.fsd(:)];                            
+                            else
+                                MinFvalNew = min(MinFvalNew,min(y(:)));
+                            end
                         else
-                            MinFvalNew = min(MinFvalNew,min(y(:)));
+                            MinFvalNew = MinFval;
                         end
                         if isfield(history{i},'FunCallsPerIter')
                             FunCallsPerIter{i} = history{i}.FunCallsPerIter;
@@ -426,7 +428,7 @@ function [xx,yy,yyerr] = plotIterations(x,y,D,MinFval,iLayer,arglayer,options)
                 yy = nanmean(nanmean(F,3),1);
                 % yy = nanmean(y < options.SolveThreshold, 1);
                 yyerr = stderr(nanmean(F,3), 0, 1);                
-            case 'ert'                
+            case 'ert'
                 % Compute empirical distribution of ERT's (divided by dimension)
                 runlen = y(:,end);
                 D = max(D);
