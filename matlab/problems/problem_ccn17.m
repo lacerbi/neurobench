@@ -3,17 +3,8 @@ function probstruct = problem_ccn17(prob,subprob,noise,id,options)
 % Problem names (ordered)
 problist{1}  = 'visvest_joint';
 problist{10} = 'aspen_wrm';
-problist{20} = 'xuan';
 problist{30} = 'goris2014';
-problist{40} = 'bas_sampling';
-problist{51} = 'bas_vstm_bas';
-problist{52} = 'bas_vstm_notbas1';
-problist{53} = 'bas_vstm_notbas2';
-problist{54} = 'bas_psycho_bas';
-problist{55} = 'bas_psycho_notbas1';
-problist{56} = 'bas_psycho_notbas2';
-problist{60} = 'weiji_er';
-problist{70} = 'jing_temporalsummation';
+problist{40} = 'vanopheusden2016';
 
 % Initialize problem structure
 if ischar(subprob); S = extractnum(subprob); else S = subprob; end
@@ -36,21 +27,7 @@ switch probstruct.Number
         mfit.project = 'VestBMS';
         probstruct.mfit = mfit;
         probstruct.Family = 'visvest';
-        
-    case 2
-        temp = load('trevor-bimodal.mat');
-        mfit = temp.mfit_bayesavg{S};
-        mfit.prefix = 'CueBMS';
-        probstruct.mfit = mfit;
-        probstruct.Family = 'trevor';
-
-    case 3
-        temp = load('trevor-bimodal.mat');
-        mfit = temp.mfit_full_bayesavg{S};
-        mfit.prefix = 'CueBMS';
-        probstruct.mfit = mfit;
-        probstruct.Family = 'trevor';
-        
+                
     case 11
         % nAspen = probstruct.Number - 10;
         probstruct.Family = 'aspen';
@@ -60,35 +37,15 @@ switch probstruct.Number
         %probstruct.data = temp.data{nAspen}{S};
         % probstruct.TrueMinX = temp.truetheta{nAspen}(S,:); % Minimum must be near here
         
-    case 20 % Xuan's social psychology (face gender) experiment        
-        probstruct.Family = 'xuan';
-        mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN17',filesep,'xuan']);
-        
-    case 30 % Robbe Goris neural LN-LN model
+    case 30 % Goris et al. (2014) neural LN-LN model
         probstruct.Family = 'goris2014';
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'goris2014']);
 
-    case 40 % Bas's VSTM sampling model
-        probstruct.Family = 'bas_sampling';
+    case 40 % van Opheusden et al. (2016) Gomoku model
+        probstruct.Family = 'vanopheusden2016';
         mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN17',filesep,'bas-sampling']);
-
-    case {51,52,53,54,55,56} % Bas's inverse sampling project
-        probstruct.Family = 'bas_inversesampling';
-        mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN17',filesep,'bas-inversesampling']);
-        
-    case 60 % Weiji's ER
-        probstruct.Family = 'weiji_er';
-        mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN17',filesep,'weiji-er']);        
-
-    case 70 % Jing's temporal summation model
-        probstruct.Family = 'jing_temporalsummation';
-        mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN17',filesep,'jing-temporalsummation']);        
+        addpath([mypath,filesep,'CCN17',filesep,'vanopheusden2016']);
 
 end
 
@@ -111,18 +68,12 @@ switch probstruct.Family
         probstruct = loadprob(probstruct,'aspen_wrm_wrapper',S);
         probstruct.MaxFunEvals = 100*length(probstruct.LowerBound);        
 
-    case 'xuan' % Xuan's social psychology (face gender) experiment
-        probstruct = loadprob(probstruct,'xuan_wrapper',S);        
-
     case 'goris2014' % Robbe Goris's neural LN-LN model
         probstruct = loadprob(probstruct,'goris2014_wrapper',S);
         % probstruct.IntrinsicNoisy = 1;      % Noisy problem
         
-    case 'bas_sampling'
-        nBas = mod(S,100);
-        probstruct = loadprob(probstruct,'bas_sampling_wrapper',nBas);
-        probstruct.MaxFunEvals = 200;
-        probstruct.AvgSamples = 200;
+    case 'vanopheusden2016' % van Opheusden's Gomoku MCTS model
+        probstruct = loadprob(probstruct,'gomoku_wrapper',S);
         
     case 'bas_inversesampling'
         switch (probstruct.Number-50)
@@ -138,14 +89,6 @@ switch probstruct.Family
         probstruct.MaxFunEvals = 200;
         probstruct.AvgSamples = 200;    % Samples at the end of run
         
-    case 'weiji_er'
-        probstruct = loadprob(probstruct,'benchmark_wrapper_weiji_er',S);
-        probstruct.MaxFunEvals = 800;
-        probstruct.AvgSamples = 200;    % Samples at the end of run
-        
-    case 'jing_temporalsummation'
-        probstruct = loadprob(probstruct,'benchmark_wrapper_jing',S);
-        probstruct.MaxFunEvals = 4000;
         
 end
 
