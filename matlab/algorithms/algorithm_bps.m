@@ -104,7 +104,7 @@ if ~isempty(probstruct.Noise) || probstruct.IntrinsicNoisy
     algoptions.UncertaintyHandling = 'on';
     NoiseEstimate = probstruct.NoiseEstimate;
     if isempty(NoiseEstimate); NoiseEstimate = 1; end    
-    algoptions.NoiseSize = NoiseEstimate;
+    algoptions.NoiseSize = NoiseEstimate(1);
 end
 
 % Variables with periodic boundary

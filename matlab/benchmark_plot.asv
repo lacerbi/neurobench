@@ -68,14 +68,13 @@ NumZero = options.NumZero;
 labels = {'probset','prob','subprob','noise','algo','algoset'};
 for i = 1:length(labels); varargin{i} = cellify(varargin{i}); end
 
-% Check if noisy optimization
-% if isempty(options.Noisy)
-%     options.Noisy = ~isempty(varargin{4});
-% end
-% if ~isempty(varargin{4}) && ~options.Noisy
-%     warning('NOISE is empty but OPTIONS.Noisy is set to 0.');
-%     pause(1);
-% end
+if isempty(options.Noisy)
+    options.Noisy = ~isempty(varargin{4})
+end
+if ~isempty(varargin{4}) && ~options.Noisy
+    warning('NOISE is empty but OPTIONS.Noisy is set to 0.');
+    pause(1);
+end
 
 % linstyle = {'k-','b-','r-','g-','m:','r:','c:','g:','k-.','r-.'};
 
