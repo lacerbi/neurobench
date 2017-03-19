@@ -119,6 +119,33 @@ case "${1}" in
                 ALGOS="{'fmincon@sqp'}"
                 IDS="{'1:30'}"
                 ;;
+        60)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09_1}
+                IDS="{'1:30'}"
+                NOISE="{'me'}"
+                ;;
+        61)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09_2}
+                IDS="{'1:30'}"
+		NOISE="{'me'}"
+                ;;
+        62)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09_3}
+                IDS="{'1:30'}"
+		NOISE="{'me'}"
+                ;;
+        63)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09}
+                ALGOS=$BPSALGO_1
+                IDS="{'1:10','11:20','21:30'}"
+		NOISE="{'me'}"
+                ;;
+        64)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09}
+                ALGOS=$BPSALGO_2
+                IDS="{'1:10','11:20','21:30'}"
+		NOISE="{'me'}"
+                ;;
         101)    PROBSET="{'ccn17'}"
                 PROBS="{'visvest_joint'}"
 		ALGOS=$BESTALGOS
