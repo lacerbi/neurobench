@@ -9,7 +9,7 @@ JOBSCRIPT="${BASEDIR}/scripts/myjob.sh"
 RUN=${1}
 INPUTFILE="${SCRATCH}/${PROJECT}/joblist-${1}.txt"
 MAXID=$(sed -n $= ${INPUTFILE})
-RUNTIME=24:00:00
+RUNTIME=48:00:00
 MAXRT=NaN
 VERBOSE=0
 USEPRIOR=1
@@ -18,7 +18,7 @@ STOPSUCCRUNS=1;
 MAXFUNMULT="[]"
 
 NODES="1"
-PPN="5"
+PPN="20"
 MEM="3GB"
 RESOURCES="nodes=${NODES}:ppn=${PPN},mem=${MEM},walltime=${RUNTIME}"
 
