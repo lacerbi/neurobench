@@ -3,6 +3,7 @@ function probstruct = problem_ccn17(prob,subprob,noise,id,options)
 % Problem names (ordered)
 problist{1}  = 'visvest_joint';
 problist{10} = 'vandenberg2016';
+problist{20} = 'adler2016';
 problist{30} = 'goris2014';
 problist{40} = 'vanopheusden2016';
 
@@ -28,12 +29,16 @@ switch probstruct.Number
         probstruct.mfit = mfit;
         probstruct.Family = 'visvest';
                 
-    case 10
-        % nAspen = probstruct.Number - 10;
+    case 10 % van den Berg (2017) working memory model with confidence
         probstruct.Family = 'vandenberg2016';
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'vandenberg2016']);
-        
+
+    case 20 % Adler and Ma (2016) perceptual confidence Bayesian model
+        probstruct.Family = 'adler2016';
+        mypath = fileparts(mfilename('fullpath'));
+        addpath([mypath,filesep,'CCN17',filesep,'adler2016']);
+
     case 30 % Goris et al. (2014) neural LN-LN model
         probstruct.Family = 'goris2014';
         mypath = fileparts(mfilename('fullpath'));
@@ -65,6 +70,9 @@ switch probstruct.Family
         probstruct.MaxFunEvals = 200*length(probstruct.LowerBound);
         probstruct.IntrinsicNoisy = 1;  % Noisy problem        
         probstruct.AvgSamples = 200;    % Samples at the end of run
+
+    case 'adler2016' % Will T. Adler Bayesian confidence model
+        probstruct = loadprob(probstruct,'confidence_wrapper',S);
 
     case 'goris2014' % Robbe Goris's neural LN-LN model
         probstruct = loadprob(probstruct,'goris2014_wrapper',S);
