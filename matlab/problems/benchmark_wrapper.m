@@ -7,7 +7,7 @@ function varargout = benchmark_wrapper(n,x,data)
 %   dataset or subproblem identifier N as input (a positive integer) 
 %   and returns:
 %     - a vector NVEC with the used dataset identifiers (a vector of
-%       positive integers);
+%       positive integers; e.g., 1:8 for subjects from 1 to 12);
 %     - lower/upper bounds LB and UB for the problem variables; 
 %     - plausible lower/upper bounds PLB and PUB (you can set PLB=LB and 
 %       PUB=UB if plausible variable ranges are unknown);
@@ -36,7 +36,7 @@ if nargin == 1
     
     % Define problem parameters (example)
     nvars = 5;                  % Number of variables
-    nvec = 1:20;                % List of dataset identifiers
+    nvec = 1:12;                % List of dataset identifiers (e.g., 12 subjects)
     lb = zeros(1,nvars);        % Lower bounds (hard)
     ub = ones(1,nvars);         % Upper bounds (hard)
     plb = 0.1*ones(1,nvars);    % Plausible lower bounds
