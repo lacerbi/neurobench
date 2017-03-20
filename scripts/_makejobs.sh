@@ -152,6 +152,12 @@ case "${1}" in
                 IDS="{'1:5','6:10','11:15','16:20','21:25','26:30'}"
                 NOISE="{'me'}"
                 ;;
+        66)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09}
+                ALGOS="{'bads@robust','bads@robust2'}"
+                IDS="{'1:10','11:20','21:30'}"
+                NOISE="{'me'}"
+                ;;
         101)    PROBSET="{'ccn17'}"
                 PROBS="{'visvest_joint'}"
 		ALGOS=$BESTALGOS
