@@ -28,7 +28,7 @@ switch probstruct.Number
         probstruct.mfit = mfit;
         probstruct.Family = 'visvest';
                 
-    case 11
+    case 10
         % nAspen = probstruct.Number - 10;
         probstruct.Family = 'vandenberg2016';
         mypath = fileparts(mfilename('fullpath'));
