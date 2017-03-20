@@ -39,7 +39,8 @@ DIMS="{'3D','6D','10D','15D'}"
 NOISE="'[]'"
 #ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global'}"
 ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','fmincon@actset','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global'}"
-BESTALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','patternsearch','particleswarm','cmaes','mcs','bipopcmaes','global'}"
+BESTALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','patternsearch','particleswarm','cmaes','mcs','global'}"
+NOISEALGOS="{'ga','simulannealbnd','fminsearch','patternsearch','particleswarm','cmaes','cmaes@noisy','mcs','global','randsearch'}"
 ALGOSET="'base'"
 IDS="'1:30'"
 
@@ -182,16 +183,17 @@ case "${1}" in
                 ALGOS=$BPSALGO_2
                 IDS="{'1:2','3:4','5:6','7:8','9:10','11:12','13:14','15:16','17:18','19:20','21:22','23:24','25:26','27:28','29:30','31:32','33:34','35:36','37:38','39:40','41:42','43:44','45:46','47:48','49:50'}"
                 ;;
-        201)    PROBSET="{'ccn15'}"
-                PROBS="{'aspen_wrm_fp','aspen_wrm_vpheurs','aspen_wrm_fpheurs','aspen_wrm_vp','aspen_wrm_uneqvar'}"
-                DIMS="{'S1','S2','S3'}"
-                IDS="{'1:25','26:50','51:75','76:100'}"
+        201)    PROBSET="{'ccn17'}"
+                PROBS="{'vandenberg2016'}"
+                DIMS="{'S2101','S2102','S2103','S3104','S3105','S3106'}"
+		ALGOS=$NOISEALGOS
+                IDS="{'1:2','3:4','5:6','7:8','9:10','11:12','13:14','15:16','17:18','19:20'}"
                 ;;
-        202)    PROBSET="{'ccn15'}"
-                PROBS="{'aspen_wrm_fp','aspen_wrm_vpheurs','aspen_wrm_fpheurs','aspen_wrm_vp','aspen_wrm_uneqvar'}"
-                DIMS="{'S1','S2','S3'}"
-		ALGOS="{'multibayes'}"
-                IDS="{'1:5','6:10','11:15','16:20','21:25','26:30','31:35','36:40','41:45','46:50'}"
+        202)    PROBSET="{'ccn17'}"
+                PROBS="{'vandenberg2016'}"
+                DIMS="{'S2101','S2102','S2103','S3104','S3105','S3106'}"
+                ALGOS="{'bads'}"
+                IDS="{'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'}"
                 ;;
         301)    PROBSET="{'ccn17'}"
                 PROBS="{'goris2014'}"
