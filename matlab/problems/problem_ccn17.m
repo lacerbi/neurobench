@@ -2,7 +2,7 @@ function probstruct = problem_ccn17(prob,subprob,noise,id,options)
 
 % Problem names (ordered)
 problist{1}  = 'visvest_joint';
-problist{10} = 'aspen_wrm';
+problist{10} = 'vandenberg2016';
 problist{30} = 'goris2014';
 problist{40} = 'vanopheusden2016';
 
@@ -30,12 +30,9 @@ switch probstruct.Number
                 
     case 11
         % nAspen = probstruct.Number - 10;
-        probstruct.Family = 'aspen';
+        probstruct.Family = 'vandenberg2016';
         mypath = fileparts(mfilename('fullpath'));
-        addpath([mypath,filesep,'CCN17',filesep,'aspen-wrm']);
-        % temp = load('aspen-wrm-11-Aug-2015.mat');
-        %probstruct.data = temp.data{nAspen}{S};
-        % probstruct.TrueMinX = temp.truetheta{nAspen}(S,:); % Minimum must be near here
+        addpath([mypath,filesep,'CCN17',filesep,'vandenberg2016']);
         
     case 30 % Goris et al. (2014) neural LN-LN model
         probstruct.Family = 'goris2014';
@@ -60,15 +57,14 @@ switch probstruct.Family
         probstruct.UpperBound = mfit.mp.bounds.UB(:)';
         probstruct.NoiseEstimate = 0;   % Not a noisy problem
         
-    case 'aspen'
+    case 'vandenberg2016'
         %clear -global memDistsNew memDistsOld centers nGridsVec;
         %global memDistsNew memDistsOld centers nGridsVec;
         %memDistsNew = []; memDistsOld = []; centers = []; nGridsVec = [];
-        
-        probstruct = loadprob(probstruct,'aspen_wrm_wrapper',S);
-        probstruct.MaxFunEvals = 100*length(probstruct.LowerBound);        
-        probstruct.IntrinsicNoisy = 1;      % Noisy problem
-        
+        probstruct = loadprob(probstruct,'vandenberg2016_wrapper',S);
+        probstruct.MaxFunEvals = 200*length(probstruct.LowerBound);
+        probstruct.IntrinsicNoisy = 1;  % Noisy problem        
+        probstruct.AvgSamples = 200;    % Samples at the end of run
 
     case 'goris2014' % Robbe Goris's neural LN-LN model
         probstruct = loadprob(probstruct,'goris2014_wrapper',S);
@@ -76,7 +72,8 @@ switch probstruct.Family
     case 'vanopheusden2016' % van Opheusden's Gomoku MCTS model
         probstruct = loadprob(probstruct,'gomoku_wrapper',S);
         probstruct.MaxFunEvals = 2000;  % Limit fun evals
-        probstruct.IntrinsicNoisy = 1;      % Noisy problem
+        probstruct.IntrinsicNoisy = 1;  % Noisy problem
+        probstruct.AvgSamples = 200;    % Samples at the end of run
         
     case 'bas_inversesampling'
         switch (probstruct.Number-50)
