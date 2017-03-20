@@ -12,7 +12,8 @@ switch algoset
     case {0,'debug'}; algoset = 'debug'; algoptions.Debug = 1; algoptions.Plot = 'scatter';
     case {1,'base'}; algoset = 'base';           % Use defaults
     case {2,'robust'}; algoset = 'robust'; algoptions.ImprovementQuantile = 0.33;
-    case {3,'robust2'}; algoset = 'robust'; algoptions.ImprovementQuantile = 0.25;
+    case {3,'robust2'}; algoset = 'robust2'; algoptions.ImprovementQuantile = 0.25;
+    case {4,'robust3'}; algoset = 'robust3'; algoptions.ImprovementQuantile = 0.1;
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
