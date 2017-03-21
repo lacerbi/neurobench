@@ -41,6 +41,7 @@ defopts.Nsamp = 5e3;            % Samples for ERT computation
 defopts.TwoRows = 0;
 defopts.EnhanceLine = 'last';   % Enhance one plotted line
 defopts.UnknownMin = false;     % Force minimum being unknown
+defopts.BadLogLikelihood = 5e3; % Arbitrary score for bad log likelihood
 
 % Plotting options
 defopts.YlimMax = 1e3;
@@ -206,6 +207,7 @@ for iFig = 1:nfigs
                             ynew = history{i}.MinScores - history{i}.TrueMinFval;
                         end
                         ynew(isnan(ynew)) = min(ynew);
+                        ynew(ynew == options.BadLogLikelihood) = Inf;
                         if options.Noisy
                             [~,index] = min(history{i}.Output.fval);
                             y = [y; history{i}.Output.fval(index) history{i}.Output.fsd(index)]; 
@@ -264,7 +266,11 @@ for iFig = 1:nfigs
                 if options.Noisy
                     benchdatanew.(field1).(field2).(field3).MinBag = MinBag;
                 else
-                    benchdatanew.(field1).(field2).(field3).MinFval = MinFvalNew;
+                    if MinFvalNew ~= options.BadLogLikelihood
+                        benchdatanew.(field1).(field2).(field3).MinFval = MinFvalNew;
+                    else
+                        benchdatanew.(field1).(field2).(field3).MinFval = Inf;
+                    end
                 end
                                                 
                 % Check if summary statistics match with loaded ones
@@ -278,7 +284,7 @@ for iFig = 1:nfigs
                     end
                 end
                 
-                if isempty(benchdata) || StatMismatch
+                if isempty(benchdata) || StatMismatch && (MinFvalNew ~= options.BadLogLikelihood)
                     MinFval = MinFvalNew;
                 end
                 

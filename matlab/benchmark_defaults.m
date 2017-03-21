@@ -47,7 +47,7 @@ switch lower(type)
     case 'problem'
         
         defaults.ConstraintPenalty = 100;
-        defaults.NonAdmissibleFuncValue = 5000;
+        defaults.NonAdmissibleFuncValue = 1e4;
         defaults.MaxFunEvals = 500*probstruct.D;
         defaults.TolFun = options.TolFun;   % Precision data
         defaults.SaveTicks = [];            % Time to save data
