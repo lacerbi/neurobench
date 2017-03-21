@@ -6,6 +6,7 @@ problist{10} = 'vandenberg2016';
 problist{20} = 'adler2016';
 problist{30} = 'goris2014';
 problist{40} = 'vanopheusden2016';
+problist{50} = 'targetloc';
 
 % Initialize problem structure
 if ischar(subprob); S = extractnum(subprob); else S = subprob; end
@@ -48,6 +49,12 @@ switch probstruct.Number
         probstruct.Family = 'vanopheusden2016';
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'vanopheusden2016']);
+        
+    case 50 % Mihali et al. (in preparation) target localization
+        probstruct.Family = 'targetloc';
+        mypath = fileparts(mfilename('fullpath'));
+        addpath([mypath,filesep,'CCN17',filesep,'targetloc']);
+        
 
 end
 
@@ -63,9 +70,6 @@ switch probstruct.Family
         probstruct.NoiseEstimate = 0;   % Not a noisy problem
         
     case 'vandenberg2016'
-        %clear -global memDistsNew memDistsOld centers nGridsVec;
-        %global memDistsNew memDistsOld centers nGridsVec;
-        %memDistsNew = []; memDistsOld = []; centers = []; nGridsVec = [];
         probstruct = loadprob(probstruct,'vandenberg2016_wrapper',S);
         probstruct.MaxFunEvals = 200*length(probstruct.LowerBound);
         probstruct.IntrinsicNoisy = 1;  % Noisy problem        
@@ -81,6 +85,12 @@ switch probstruct.Family
         probstruct = loadprob(probstruct,'gomoku_wrapper',S);
         probstruct.MaxFunEvals = 2000;  % Limit fun evals
         probstruct.IntrinsicNoisy = 1;  % Noisy problem
+        probstruct.AvgSamples = 200;    % Samples at the end of run
+
+    case 'targetloc'    % Mihali et al. (in preparation) target localization
+        probstruct = loadprob(probstruct,'targetloc_wrapper',S);
+        probstruct.MaxFunEvals = 200*length(probstruct.LowerBound);
+        probstruct.IntrinsicNoisy = 1;  % Noisy problem        
         probstruct.AvgSamples = 200;    % Samples at the end of run
         
     case 'bas_inversesampling'
