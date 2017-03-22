@@ -31,17 +31,17 @@ switch probstruct.Number
         probstruct.Family = 'visvest';
                 
     case 10 % van den Berg (2017) working memory model with confidence
-        probstruct.Family = 'vandenberg2016';
+        probstruct.Family = 'vandenberg2016';   % Year is off by one
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'vandenberg2016']);
 
     case 20 % Adler and Ma (2016) perceptual confidence Bayesian model
-        probstruct.Family = 'adler2016';
+        probstruct.Family = 'adler2016';        % Year is off by one
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'adler2016']);
 
-    case 30 % Goris et al. (2014) neural LN-LN model
-        probstruct.Family = 'goris2014';
+    case 30 % Goris et al. (2015) neural LN-LN model (tuning diversity)
+        probstruct.Family = 'goris2014';        % Year is off by one
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'goris2014']);
 

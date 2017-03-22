@@ -1,6 +1,6 @@
 function [history,x,fval,algoptions] = algorithm_bads(algo,algoset,probstruct)
 
-algoptions = bps('defaults');                   % Get default settings
+algoptions = bads('all');                   % Get default settings
 
 algoptions.MaxFunEvals = probstruct.MaxFunEvals;
 algoptions.TolFun = probstruct.TolFun;          % Standard TolFun
