@@ -19,7 +19,7 @@ if [ -z "${2}" ];
 fi
 
 FILEID=${1}
-FILENAME="'joblist-${FILEID}.txt'"
+FILENAME="joblist-${FILEID}.txt"
 echo "Input #: ${1}   Output file: ${FILENAME}"
 
 CEC14="{'sphere','ellipsoid','rotated_ellipsoid','step','ackley','griewank','rosenbrock','rastrigin'}"
@@ -280,6 +280,8 @@ cat<<EOF | matlab -nodisplay
 addpath(genpath('${HOME}/${PROJECT}'));
 currentDir=cd;
 cd('${WORKDIR}');
-benchmark_joblist(${FILENAME},'run${DIRID}',${PROBSET},${PROBS},${DIMS},${NOISE},${ALGOS},${ALGOSET},${IDS});
+benchmark_joblist('${FILENAME}','run${DIRID}',${PROBSET},${PROBS},${DIMS},${NOISE},${ALGOS},${ALGOSET},${IDS});
 cd(currentDir);
 EOF
+
+cat ${WORKDIR}/${FILENAME} | wc
