@@ -160,13 +160,13 @@ case "${1}" in
                 ;;
         66)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
-                ALGOS="{'bads@robust','bads@robust2'}"
+                ALGOS="{'bads'}"
                 IDS="{'1:10','11:20','21:30'}"
                 NOISE="{'me'}"
                 ;;
         67)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
-                ALGOS="{'bads@robust3'}"
+                ALGOS="{'bads@x2'}"
                 IDS="{'1:10','11:20','21:30'}"
                 NOISE="{'me'}"
                 ;;
