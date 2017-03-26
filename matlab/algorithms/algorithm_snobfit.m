@@ -27,7 +27,7 @@ snobfit('testfile',[],[],params,dx);
 funcCount = 0;
 iter = 1;
 
-error('need to fix a few things in SNOBFIT');
+% error('need to fix a few things in SNOBFIT');
 
 while 1
     np = size(x,1);

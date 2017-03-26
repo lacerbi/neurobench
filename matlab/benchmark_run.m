@@ -3,7 +3,7 @@ function [probstruct,history] = benchmark_run(probset,prob,subprob,noise,algo,id
 
 % Luigi Acerbi 2017
 
-% clear functions;
+clear functions;
 
 if nargin < 7; options = []; end
 
