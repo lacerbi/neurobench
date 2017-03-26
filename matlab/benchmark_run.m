@@ -3,7 +3,7 @@ function [probstruct,history] = benchmark_run(probset,prob,subprob,noise,algo,id
 
 % Luigi Acerbi 2017
 
-clear functions;
+% clear functions;
 
 if nargin < 7; options = []; end
 
@@ -58,6 +58,7 @@ options.AlgorithmSetup = algoset;
 if isempty(noise); noisestring = []; else noisestring = [charsep noise 'noise']; end
 
 scratch_flag = false;
+timeOffset = 0; % Computation time that does not count for benchmark
 
 % Test processor speed (for baseline)
 speedtest = [];
@@ -90,7 +91,7 @@ for iRun = 1:length(idlist)
         probstruct.nIters = probstruct.nIters + 1;
         
         % Update iteration counter
-        benchmark_func([],probstruct,1,probstruct.nIters);
+        benchmark_func([],probstruct,1,probstruct.nIters,timeOffset);
     
         % Initial optimization point (used only by some algorithms)
         probstruct.InitPoint = [];
@@ -110,43 +111,14 @@ for iRun = 1:length(idlist)
         
         % Remove duplicate points from basket of candidate points
         index = duplicates(xnew,options.TolX);
-        xnew(index,:) = []; fvalnew(index) = [];
-        
-        % Keep only first and a few other best candidate points
-        if size(xnew,1) > probstruct.CandidateX
-            % temp = fvalnew(2:end);
-            [~,index] = sort(fvalnew(2:end),'ascend');
-            xnew = [xnew(1,:);xnew(1+index(1:probstruct.CandidateX-1),:)];
-            fvalnew = [fvalnew(1);fvalnew(1+index(1:probstruct.CandidateX-1))];
-        end
-        fsenew = zeros(size(fvalnew));  % SE of function value
+        xnew(index,:) = []; fvalnew(index) = [];        
+        fsenew = zeros(size(fvalnew));  % SE of function value (will be computed later)
         tnew = ones(size(fvalnew))*history{iRun}.FunCalls;
-        
-        % Get non-noisy or approximate function value for noisy functions
-        if ~isempty(probstruct.Noise) || probstruct.IntrinsicNoisy
-            for iPoint = 1:size(xnew,1)
-                if ~probstruct.IntrinsicNoisy        % Only added noise
-                    fvalnew(iPoint) = benchmark_func(xnew(iPoint,:),probstruct,1);
-                else                                % Noisy function
-                    temp = zeros(1,probstruct.AvgSamples);
-                    temp(1) = fvalnew(iPoint);
-                    for iSample = 2:probstruct.AvgSamples
-                        temp(iSample) = benchmark_func(xnew(iPoint,:),probstruct,1);
-                        % If SE of current samples is less than TolFun,
-                        % stop (collect at least four samples)
-                        tempse = stderr(temp(1:iSample));
-                        if iSample >= 4 && tempse < probstruct.TolFun; break; end
-                    end
-                    fvalnew(iPoint) = nanmean(temp(1:iSample));
-                    fsenew(iPoint) = stderr(temp(1:iSample));
-                end
-            end            
-        end
         
         %xnew
         %[fvalnew,fsenew]
         
-        % Add new points and their values
+        % Add new points and their returned values
         x = [x; xnew];
         fval = [fval; fvalnew];
         fse = [fse; fsenew];
@@ -154,16 +126,25 @@ for iRun = 1:length(idlist)
                         
         remainingFunEvals = probstruct.TotalMaxFunEvals - history{iRun}.FunCalls;
         FunCallsPerIter(probstruct.nIters+1) = history{iRun}.FunCalls - sum(FunCallsPerIter(1:probstruct.nIters));
-        % if remainingFunEvals > 0; probstruct.MaxFunEvals = remainingFunEvals; end
+        
+        % For intrinsically noisy functions, stop running at feval cutoff
+        if remainingFunEvals > 0 && probstruct.IntrinsicNoisy
+            probstruct.MaxFunEvals = remainingFunEvals;
+        end
         
         % Minimum true value is known - stop iteration if reached
         if isfinite(probstruct.TrueMinFval) && ...
                 (min(history{iRun}.MinScores) - probstruct.TrueMinFval) ...
                     < probstruct.TolFun && ...
-                    options.StopSuccessfulRuns
+                    options.StopSuccessfulRuns && ...
+                    ~probstruct.IntrinsicNoisy
                 remainingFunEvals = 0;                
         end
     end
+    
+    % Post-process returned points (remove extra points, evaluate noisy functions)
+    [x,fval,fse,t,extraTime] = postprocesspoints(x,fval,fse,t,probstruct);
+    timeOffset = timeOffset + extraTime;
     
     % Convert back to normal coordinates
     if isfield(probstruct,'trinfo')
@@ -252,3 +233,42 @@ else
     index = [];
 end
 %--------------------------------------------------------------------------
+function [x,fval,fse,t,timeOffset] = postprocesspoints(x,fval,fse,t,probstruct)
+%POSTPROCESS Postprocess benchmark output.
+
+% This time does not count for actual performance benchmark
+tOffset = tic;
+
+% Keep only first and a few other best candidate points
+if size(x,1) > probstruct.CandidateX
+    % temp = fvalnew(2:end);
+    [~,index] = sort(fval(2:end),'ascend');
+    x = [x(1,:); x(1+index(1:probstruct.CandidateX-1),:)];
+    fval = [fval(1); fval(1+index(1:probstruct.CandidateX-1))];
+    fse = [fse(1); fse(1+index(1:probstruct.CandidateX-1))];
+    t = [t(1); t(1+index(1:probstruct.CandidateX-1))];    
+end
+
+% Get non-noisy or approximate function value for noisy functions
+if ~isempty(probstruct.Noise) || probstruct.IntrinsicNoisy
+    for iPoint = 1:size(x,1)
+        x0 = x(iPoint,:);
+        if ~probstruct.IntrinsicNoisy        % Only added noise
+            fval(iPoint) = benchmark_func(x0,probstruct,1);
+        else                                % Noisy function
+            temp = zeros(1,probstruct.AvgSamples);
+            temp(1) = fval(iPoint);
+            for iSample = 2:probstruct.AvgSamples
+                temp(iSample) = benchmark_func(x0,probstruct,1);
+                % If SE of current samples is less than TolFun,
+                % stop (collect at least four samples)
+                tempse = stderr(temp(1:iSample));
+                if iSample >= 4 && tempse < probstruct.TolFun; break; end
+            end
+            fval(iPoint) = nanmean(temp(1:iSample));
+            fse(iPoint) = stderr(temp(1:iSample));
+        end
+    end
+end
+
+timeOffset = toc(tOffset);

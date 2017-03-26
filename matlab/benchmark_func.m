@@ -1,4 +1,4 @@
-function varargout = benchmark_func(x,probstruct,debug,iter)
+function varargout = benchmark_func(x,probstruct,debug,iter,toffset)
 %BENCHMARK_FUNC Wrapper for optimization benchmark objective function.
 
 persistent history;     % Log history of function calls
@@ -20,15 +20,16 @@ if isstruct(x)  % Swapped variable order
     x = temp;
 end
 
-% Added Gaussian noise (replaces problem-defined value for this call)
 if nargin < 3 || isempty(debug); debug = 0; end
 if nargin < 4; iter = []; end
+if nargin < 5 || isempty(toffset); toffset = 0; end
 
 % Update current run number
 if debug && ~isempty(iter)
     if iter > 1
         history.CurrentIter = iter;
         history.StartIterFunCalls = history.FunCalls;
+        history.TimeOffset = history.TimeOffset + toffset;
         if size(history.ThresholdsHitPerIter,1) < iter
             history.ThresholdsHitPerIter = [history.ThresholdsHitPerIter; ...
                 Inf(1, numel(history.Thresholds))];        
@@ -87,8 +88,8 @@ if isempty(history)     % First function call, initialize log
     history.SaveTicks = probstruct.SaveTicks;
     if isfield(probstruct,'trinfo'); history.trinfo = probstruct.trinfo; end
     history.Clock = tic;
+    history.TimeOffset = 0; % Time to be subtracted from clock    
     history.CurrentIter = 1;
-    
 end
 
 % Check that x is within the hard bounds
@@ -115,9 +116,9 @@ end
 % Check if need to pass probstruct
 try
     if strfind(probstruct.func,'probstruct_')
-        tic; fval = func(x,probstruct); t = toc;
+        tfun = tic; fval = func(x,probstruct); t = toc(tfun);
     else
-        tic; fval = func(x); t = toc;
+        tfun = tic; fval = func(x); t = toc(tfun);
     end
 catch except
     warning(['Error in benchmark function ''' history.Func '''.' ...
@@ -151,7 +152,7 @@ if ~debug
     if ~isempty(idx)
         history.FuncTime(idx) = history.FuncTimeTemp;
         history.FuncTimeTemp = 0;
-        history.ElapsedTime(idx) = toc(history.Clock);
+        history.ElapsedTime(idx) = toc(history.Clock) - history.TimeOffset;
         history.MinScores(idx) = history.MinScore;
     end
         

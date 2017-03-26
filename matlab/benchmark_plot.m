@@ -199,12 +199,14 @@ for iFig = 1:nfigs
                             x = [x; history{1}.SaveTicks];
                         end
                         
-                        % Get time ticks
+                        % Get valid time ticks
+                        idx_valid = history{i}.SaveTicks <= history{i}.TotalMaxFunEvals;                        
+                        ynew = history{i}.MinScores(idx_valid);                        
+                        
                         if isnan(history{i}.TrueMinFval) || options.UnknownMin
-                            ynew = history{i}.MinScores;
                             IsMinKnown = false;
                         else
-                            ynew = history{i}.MinScores - history{i}.TrueMinFval;
+                            ynew = ynew - history{i}.TrueMinFval;
                         end
                         ynew(isnan(ynew)) = min(ynew);
                         ynew(ynew == options.BadLogLikelihood) = Inf;
@@ -615,8 +617,9 @@ function [xx,yy,yyerr,MeanMinFval] = plotNoisy(y,MinBag,iLayer,arglayer,options)
             fmin = min(fval + fsd.*randn(size(fsd)),[],1);
             MeanMinFval = nanmean(fmin);
             d = bsxfun(@minus, f1, fmin);
-            yy = nanmean(d(:) < options.SolveThreshold);
-            yyerr = stderr(d(:) < options.SolveThreshold);
+            target = nanmean(bsxfun(@lt, d(:), options.SolveThreshold(:)'),2);            
+            yy = nanmean(target);
+            yyerr = stderr(target);
     end
 
     plotErrorBar = options.ErrorBar;

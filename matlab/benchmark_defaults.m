@@ -56,7 +56,7 @@ switch lower(type)
         defaults.NoiseSigma = [];           % Added artificial noise
         defaults.NoiseEstimate = [];        % Estimated size of noise   
         defaults.AvgSamples = 10;           % Max # samples for estimating min fval of noisy functions
-        defaults.CandidateX = 2 + ceil(sqrt(probstruct.D)); % Maximum candidate best point per optimization iteration 
+        defaults.CandidateX = 3;            % Maximum candidate best point per optimization iteration 
         defaults.TrueMinFval = NaN;
 
 end
