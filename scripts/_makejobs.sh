@@ -95,15 +95,15 @@ case "${1}" in
                 ;;
         50)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09_1}
-                IDS="{'1:30'}"
+                IDS="{'1:30','31:50'}"
                 ;;
 	51)     PROBSET="{'bbob09'}"
 		PROBS=${BBOB09_2}
-		IDS="{'1:30'}"
+		IDS="{'1:30','31:50'}"
 		;;
         52)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09_3}
-                IDS="{'1:30'}"
+                IDS="{'1:30','31:50'}"
                 ;;
         53)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
@@ -123,7 +123,7 @@ case "${1}" in
         56)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
                 ALGOS="{'bads@x2'}"
-                IDS="{'1:10','11:20','21:30'}"
+                IDS="{'1:10','11:20','21:30','31:40','41:50'}"
                 ;;
         60)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09_1}
