@@ -1,9 +1,8 @@
 function [history,x,fval,algoptions] = algorithm_snobfit(algo,algoset,probstruct)
 
-smax = 10 + 5*probstruct.D;     % Default maximum number of levels
-nf = probstruct.MaxFunEvals;     % Maximum number of fcn evaluations
-stop = Inf;                     % Never stop
-
+algoptions.smax = 10 + 5*probstruct.D;     % Default maximum number of levels
+algoptions.nf = probstruct.MaxFunEvals;    % Maximum number of fcn evaluations
+algoptions.stop = Inf;                     % Never stop
 
 switch algoset
     case {1,'base'}; algoset = 'base'; % Use defaults
@@ -22,12 +21,13 @@ r = rand(20, probstruct.D);
 x = bsxfun(@plus, probstruct.InitRange(1,:), ...
     bsxfun(@times, r, probstruct.InitRange(2,:) - probstruct.InitRange(1,:)));
 
-snobfit('testfile',[],[],params,dx);
+% SNOBFIT I/O file
+algoptions.filename = ['snobtmp_' algoset '_' num2str(probstruct.Id) '.mat'];
+
+snobfit(algoptions.filename,[],[],params,dx);
 
 funcCount = 0;
 iter = 1;
-
-% error('need to fix a few things in SNOBFIT');
 
 while 1
     np = size(x,1);
@@ -44,15 +44,21 @@ while 1
     ubt = wt*probstruct.InitRange(2,:) + (1-wt)*UB;
     params = struct('bounds',{lbt,ubt},'nreq',probstruct.D+6,'p',0.5);        
     
-    [x,xbest,fbest] = snobfit('testfile',x,fval,params);
+    [x,xbest,fbest] = snobfit(algoptions.filename,x,fval,params);
     
     fprintf('%.4g    %.4f\n',funcCount,fbest);
+    
+    history = benchmark_func();
+    if history.FunCalls >= probstruct.MaxFunEvals; break; end
     
     iter = iter + 1;
 end
 
+x = xbest;
+fval = fbest;
+
 history = benchmark_func(); % Retrieve history
 
 % Clean output files
-%trashfile = [pwd filesep 'glsinput.mat']; 
-%if exist(trashfile, 'file'); delete(trashfile); end
+trashfile = [pwd filesep algoptions.filename]; 
+if exist(trashfile, 'file'); delete(trashfile); end
