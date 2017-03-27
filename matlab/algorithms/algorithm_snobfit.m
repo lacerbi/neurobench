@@ -23,6 +23,10 @@ x = bsxfun(@plus, probstruct.InitRange(1,:), ...
 
 % SNOBFIT I/O file
 algoptions.filename = ['snobtmp_' algoset '_' num2str(probstruct.Id) '.mat'];
+trashfile = [pwd filesep algoptions.filename]; 
+
+% Clean output files
+if exist(trashfile, 'file'); delete(trashfile); end
 
 snobfit(algoptions.filename,[],[],params,dx);
 
@@ -60,5 +64,4 @@ fval = fbest;
 history = benchmark_func(); % Retrieve history
 
 % Clean output files
-trashfile = [pwd filesep algoptions.filename]; 
 if exist(trashfile, 'file'); delete(trashfile); end
