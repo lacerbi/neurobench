@@ -324,10 +324,15 @@ case "${1}" in
         603)    PROBSET="{'ccn17'}"
                 PROBS="{'targetloc'}"
                 DIMS="{'S1','S2','S3','S4','S5','S6'}"
-                ALGOS="{'snobfit'}"
-                IDS="{'1:2','3:4','5:6','7:8','9:10','11:12','13:14','15:16','17:18','19:20'}"
+                ALGOS=$NOISEALGOS
+                IDS="{'21:23','24:26','27:29','30:32','33:35','36:38','39:41','42:44','45:47','48:50'}"
                 ;;
-
+        604)    PROBSET="{'ccn17'}"
+                PROBS="{'targetloc'}"
+                DIMS="{'S1','S2','S3','S4','S5','S6'}"
+                ALGOS="{'bads@x2'}"
+                IDS="{'21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50'}"
+		;;
 esac
 
 echo "Job items: ${PROBSET},${PROBS},${DIMS},${NOISE},${ALGOS},${ALGOSET},${IDS}"
@@ -340,4 +345,5 @@ benchmark_joblist('${FILENAME}','run${DIRID}',${PROBSET},${PROBS},${DIMS},${NOIS
 cd(currentDir);
 EOF
 
+cat ${WORKDIR}/${FILENAME}
 cat ${WORKDIR}/${FILENAME} | wc
