@@ -146,13 +146,16 @@ for iFig = 1:nfigs
             MinFvalNew = Inf;
             
             % Initialize summary statistics (load from file if present)
-            if options.Noisy
-                [benchdata,MinFval,MinBag] = ...
-                    loadSummaryStats(options.FileName,benchlist,varargin{dimlayers},dimlayers,1);
-            else
-                [benchdata,MinFval] = ...
-                    loadSummaryStats(options.FileName,benchlist,varargin{dimlayers},dimlayers,0);
-            end
+            [benchdata,MinFval] = ...
+                loadSummaryStats(options.FileName,benchlist,varargin{dimlayers},dimlayers,options.Noisy);
+            if options.Noisy; MinBag.fval = []; MinBag.fsd = []; end
+%             if options.Noisy
+%                 [benchdata,MinFval,MinBag] = ...
+%                     loadSummaryStats(options.FileName,benchlist,varargin{dimlayers},dimlayers,1);
+%             else
+%                 [benchdata,MinFval] = ...
+%                     loadSummaryStats(options.FileName,benchlist,varargin{dimlayers},dimlayers,0);
+%             end
                         
             if IsMinKnown; MinPlot = NumZero; end
             
@@ -211,8 +214,13 @@ for iFig = 1:nfigs
                         ynew(isnan(ynew)) = min(ynew);
                         ynew(ynew == options.BadLogLikelihood) = Inf;
                         if options.Noisy
-                            [~,index] = min(history{i}.Output.fval);
-                            y = [y; history{i}.Output.fval(index) history{i}.Output.fsd(index)]; 
+                            %[~,index] = min(history{i}.Output.fval);
+                            %y = [y; history{i}.Output.fval(index) history{i}.Output.fsd(index)];
+                            if IsMinKnown
+                                y = [y; history{i}.Output.fval - history{i}.TrueMinFval, history{i}.Output.fsd];
+                            else
+                                y = [y; history{i}.Output.fval, history{i}.Output.fsd]; 
+                            end
                         else
                             y = [y; ynew];
                         end
@@ -223,7 +231,11 @@ for iFig = 1:nfigs
                         % Update minimum function value
                         if ~strcmpi(options.Method,'ert')
                             if options.Noisy
-                                MinBag.fval = [MinBag.fval; history{i}.Output.fval(:)];
+                                if IsMinKnown
+                                    MinBag.fval = [MinBag.fval; history{i}.Output.fval(:) - history{i}.TrueMinFval];                                    
+                                else
+                                    MinBag.fval = [MinBag.fval; history{i}.Output.fval(:)];
+                                end
                                 MinBag.fsd = [MinBag.fsd; history{i}.Output.fsd(:)];                            
                             else
                                 MinFvalNew = min(MinFvalNew,min(y(:)));
@@ -251,7 +263,7 @@ for iFig = 1:nfigs
                         TotalFunctionTime = TotalFunctionTime + sum(history{i}.FuncTime(1:last));
                         TotalTrials = TotalTrials + history{i}.SaveTicks(last);
 
-                        if Noisy    % Account for the extra function evaluations
+                        if Noisy && 0    % Account for the extra function evaluations (obsolete)
                             TotalElapsedTime = TotalElapsedTime ...
                                 - 10*(numel(history{i}.FunCallsPerIter)-1)*TotalFunctionTime/TotalTrials;
                         end
@@ -266,7 +278,8 @@ for iFig = 1:nfigs
                 field2 = ['f2_' upper(benchlist{3}) noise];
                 field3 = ['f3_' algo '_' algoset];
                 if options.Noisy
-                    benchdatanew.(field1).(field2).(field3).MinBag = MinBag;
+                    benchdatanew.(field1).(field2).MinBag = MinBag;
+                    % benchdatanew.(field1).(field2).(field3).MinBag = MinBag;
                 else
                     if MinFvalNew ~= options.BadLogLikelihood
                         benchdatanew.(field1).(field2).(field3).MinFval = MinFvalNew;
