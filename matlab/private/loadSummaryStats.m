@@ -28,7 +28,8 @@ if exist(fileName,'file')
         % Summary statistics
         try
             if Noisy
-                storedMinBag = benchdata.(field1).(field2).(field3).MinBag;
+                storedMinBag = benchdata.(field1).(field2).MinBag;
+%                storedMinBag = benchdata.(field1).(field2).(field3).MinBag;
                 MinBag.fval = storedMinBag.fval(:);
                 MinBag.fsd = storedMinBag.fsd(:);
             else

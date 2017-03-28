@@ -14,6 +14,10 @@ else
     options = [];
 end
 
+if isfield(benchdata,'MinBag')
+    benchdata = rmfield(benchdata,'MinBag');
+end
+
 ff = fields(benchdata)';
 if any(strcmp(ff,'yy'))
     xx = benchdata.xx;
@@ -31,7 +35,7 @@ if any(strcmp(ff,'yy'))
         % summary.(fieldname).MinFval = benchdata.MinFval;
     end
 else
-    for f = ff
+    for f = ff        
         summary = benchmark_summarybarplot(benchdata.(f{:}),f{:},summary);
     end
 end
