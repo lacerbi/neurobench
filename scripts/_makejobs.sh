@@ -174,6 +174,30 @@ case "${1}" in
                 IDS="{'1:10','11:20','21:30','31:40','41:50'}"
                 NOISE="{'me'}"
                 ;;
+        70)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09_1}
+                ALGOS=${ALGOS_NOISY}
+                IDS="{'1:50'}"
+                NOISE="{'heme'}"
+                ;;        
+	71)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09_2}
+                ALGOS=${ALGOS_NOISY}
+                IDS="{'1:50'}"
+                NOISE="{'heme'}"
+                ;;
+        72)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09_3}
+                ALGOS=${ALGOS_NOISY}
+                IDS="{'1:50'}"
+                NOISE="{'heme'}"
+                ;;
+        73)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09}
+                ALGOS="{'bads@x2'}"
+                IDS="{'1:10','11:20','21:30','31:40','41:50'}"
+                NOISE="{'heme'}"
+                ;;
         101)    PROBSET="{'ccn17'}"
                 PROBS="{'visvest_joint'}"
 		ALGOS=$BESTALGOS
@@ -226,7 +250,7 @@ case "${1}" in
                 PROBS="{'vandenberg2016'}"
                 DIMS="{'S3107','S3108','S3109'}"
                 ALGOS=$NOISEALGOS
-                IDS="{'1:2','3:4','5:6','7:8','9:10','11:12','13:14','15:16','17:18','19:20'}"
+                IDS="{'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'}"
                 ;;
         206)    PROBSET="{'ccn17'}"
                 PROBS="{'vandenberg2016'}"
