@@ -16,6 +16,7 @@ switch algoset
     case {4,'robust3'}; algoset = 'robust3'; algoptions.ImprovementQuantile = 0.1;
     case {5,'x2'}; algoset = 'x2'; algoptions.SearchGridNumber = 10; algoptions.PollMeshMultiplier = 2;        
     case {6,'x4'}; algoset = 'x4'; algoptions.SearchGridNumber = 5; algoptions.PollMeshMultiplier = 4;        
+    case {7,'forcepoll'}; algoset = 'forcepoll'; algoptions.SearchGridNumber = 10; algoptions.PollMeshMultiplier = 2; algoptions.ForcePollMesh = 1;        
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
@@ -27,6 +28,8 @@ if ~isempty(probstruct.Noise) || probstruct.IntrinsicNoisy
     NoiseEstimate = probstruct.NoiseEstimate;
     if isempty(NoiseEstimate); NoiseEstimate = 1; end    
     algoptions.NoiseSize = NoiseEstimate(1);
+else
+    algoptions.UncertaintyHandling = 'off';
 end
 
 % Variables with periodic boundary
