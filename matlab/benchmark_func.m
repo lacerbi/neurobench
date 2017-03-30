@@ -50,10 +50,15 @@ if isempty(history)     % First function call, initialize log
     history.Id = probstruct.Id;
     history.D = probstruct.D;
     history.Noise = probstruct.Noise;
-    if isfield(probstruct,'NoiseSigma')
+    if isfield(probstruct,'NoiseSigma') && ~isempty(probstruct.NoiseSigma)
         history.NoiseSigma = probstruct.NoiseSigma;
     else
         history.NoiseSigma = 0;        
+    end
+    if isfield(probstruct,'NoiseIncrement') && ~isempty(probstruct.NoiseIncrement)
+        history.NoiseIncrement = probstruct.NoiseIncrement;
+    else
+        history.NoiseIncrement = 0;        
     end
     history.Func = probstruct.func;
     history.FuncHandle = str2func(probstruct.func);     % Removed later
@@ -167,7 +172,12 @@ if ~debug
     end
 
     % Add artificial noise (not in debug mode)
-    fval = fval + randn()*history.NoiseSigma;     
+    if ~isempty(history.TrueMinFval)
+        sigma = history.NoiseSigma + history.NoiseIncrement*max(fval - history.TrueMinFval,0);
+    else
+        sigma = history.NoiseSigma + history.NoiseIncrement*abs(fval);
+    end    
+    fval = fval + randn()*sigma;     
 end
 
 % x

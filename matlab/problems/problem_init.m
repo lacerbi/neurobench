@@ -22,14 +22,24 @@ for f = fieldnames(defopts)'
 end
 
 % Simulated noise
+probstruct.NoiseIncrement = 0;  % Default noise is homoskedastic
 if isempty(probstruct.NoiseSigma)
     if isempty(probstruct.Noise)
         probstruct.NoiseSigma = 0; % No noise
     else
         switch(probstruct.Noise)
-            case 'lo'; probstruct.NoiseSigma = 0.1; % Low noise
+            case 'lo'; probstruct.NoiseSigma = 0.25; % Low noise
             case 'me'; probstruct.NoiseSigma = 1; % Medium noise
-            case 'hi'; probstruct.NoiseSigma = 10; % High noise
+            case 'hi'; probstruct.NoiseSigma = 4; % High noise
+            case 'helo'     % Low heteroskedastic noise
+                probstruct.NoiseSigma = 0.25;
+                probstruct.NoiseIncrement = 0.05;
+            case 'heme'     % Medium heteroskedastic noise
+                probstruct.NoiseSigma = 1;
+                probstruct.NoiseIncrement = 0.1;
+            case 'hehi'     % High heteroskedastic noise
+                probstruct.NoiseSigma = 4;
+                probstruct.NoiseIncrement = 0.2;
         end
         if isempty(probstruct.NoiseEstimate)
             probstruct.NoiseEstimate = [probstruct.NoiseSigma, 0.2];

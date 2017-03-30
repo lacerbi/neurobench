@@ -53,7 +53,8 @@ switch lower(type)
         defaults.SaveTicks = [];            % Time to save data
         defaults.Thresholds = 10.^(1:-0.2:-3); % Recorded thresholds (only if true minimum is known)
         defaults.Noise = [];
-        defaults.NoiseSigma = [];           % Added artificial noise
+        defaults.NoiseSigma = [];           % Added base artificial noise
+        defaults.NoiseIncrement = [];       % Added heteroskedastic artificial noise
         defaults.NoiseEstimate = [];        % Estimated size of noise   
         defaults.AvgSamples = 200;          % Max # samples for estimating min fval of noisy functions
         defaults.CandidateX = 3;            % Maximum candidate best point per optimization iteration 
