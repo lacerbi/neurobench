@@ -17,6 +17,7 @@ switch algoset
     case {5,'x2'}; algoset = 'x2'; algoptions.SearchGridNumber = 10; algoptions.PollMeshMultiplier = 2;        
     case {6,'x4'}; algoset = 'x4'; algoptions.SearchGridNumber = 5; algoptions.PollMeshMultiplier = 4;        
     case {7,'forcepoll'}; algoset = 'forcepoll'; algoptions.SearchGridNumber = 10; algoptions.PollMeshMultiplier = 2; algoptions.ForcePollMesh = 1;        
+    case {8,'svgd'}; algoset = 'svgd'; algoptions.gpSamples = 10;        
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
