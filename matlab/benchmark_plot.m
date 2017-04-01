@@ -146,9 +146,18 @@ for iFig = 1:nfigs
             MinFvalNew = Inf;
             
             % Initialize summary statistics (load from file if present)
-            [benchdata,MinFval] = ...
+            [benchdata,MinFval,MinBag] = ...
                 loadSummaryStats(options.FileName,benchlist,varargin{dimlayers},dimlayers,options.Noisy);
-            if options.Noisy; MinBag.fval = []; MinBag.fsd = []; end
+            if options.Noisy; NewMinBag.fval = []; NewMinBag.fsd = []; end
+            if options.Noisy
+                if ~isempty(MinBag.fval)
+                    LoadedMinBag_flag = true;
+                else
+                    LoadedMinBag_flag = false;
+                end                
+            end
+            
+            
 %             if options.Noisy
 %                 [benchdata,MinFval,MinBag] = ...
 %                     loadSummaryStats(options.FileName,benchlist,varargin{dimlayers},dimlayers,1);
@@ -232,11 +241,13 @@ for iFig = 1:nfigs
                         if ~strcmpi(options.Method,'ert')
                             if options.Noisy
                                 if IsMinKnown
-                                    MinBag.fval = [MinBag.fval; history{i}.Output.fval(:) - history{i}.TrueMinFval];                                    
+                                    NewMinBag.fval = 0;                                    
+                                    NewMinBag.fsd = 0;
+%                                    NewMinBag.fval = [NewMinBag.fval; history{i}.Output.fval(:) - history{i}.TrueMinFval];                                    
                                 else
-                                    MinBag.fval = [MinBag.fval; history{i}.Output.fval(:)];
+                                    NewMinBag.fval = [NewMinBag.fval; history{i}.Output.fval(:)];
+                                    NewMinBag.fsd = [NewMinBag.fsd; history{i}.Output.fsd(:)];
                                 end
-                                MinBag.fsd = [MinBag.fsd; history{i}.Output.fsd(:)];                            
                             else
                                 MinFvalNew = min(MinFvalNew,min(y(:)));
                             end
@@ -249,24 +260,28 @@ for iFig = 1:nfigs
                             FunCallsPerIter{i} = NaN;                        
                         end
                         if isfield(history{i},'SaveTicks')
-                            last = find(~isnan(history{i}.ElapsedTime),1,'last');
+                            % Take only until it resets (one run)
+                            last = find(isfinite(history{i}.ElapsedTime),1,'last');
+                            last_first = find(diff(history{i}.ElapsedTime(1:last)) < 0,1);
+                            if ~isempty(last_first); last = last_first; end
                             AverageOverhead(i) = ...
                                 (history{i}.ElapsedTime(last) - sum(history{i}.FuncTime(1:last)))/history{1}.SaveTicks(last);
                         end
                         
-                        Noisy = 0;
-                        if isfield(history{i},'Output')
-                            if any(history{1}.Output.fsd(:) > 0); Noisy = 1; end
-                        end                                
+                        speedfactor = 8.2496/history{i}.speedtest;
                         
-                        TotalElapsedTime = TotalElapsedTime + history{i}.ElapsedTime(last);
-                        TotalFunctionTime = TotalFunctionTime + sum(history{i}.FuncTime(1:last));
+                        TotalElapsedTime = TotalElapsedTime + history{i}.ElapsedTime(last)*speedfactor;
+                        TotalFunctionTime = TotalFunctionTime + sum(history{i}.FuncTime(1:last))*speedfactor;
                         TotalTrials = TotalTrials + history{i}.SaveTicks(last);
 
-                        if Noisy && 0    % Account for the extra function evaluations (obsolete)
-                            TotalElapsedTime = TotalElapsedTime ...
-                                - 10*(numel(history{i}.FunCallsPerIter)-1)*TotalFunctionTime/TotalTrials;
-                        end
+%                         Noisy = 0;
+%                         if isfield(history{i},'Output')
+%                             if any(history{1}.Output.fsd(:) > 0); Noisy = 1; end
+%                         end                                
+%                         if Noisy   % Account for the extra function evaluations (obsolete)
+%                             TotalElapsedTime = TotalElapsedTime ...
+%                                 - 10*(numel(history{i}.FunCallsPerIter)-1)*TotalFunctionTime/TotalTrials;
+%                         end
                     end
                     
                 end
@@ -278,7 +293,6 @@ for iFig = 1:nfigs
                 field2 = ['f2_' upper(benchlist{3}) noise];
                 field3 = ['f3_' algo '_' algoset];
                 if options.Noisy
-                    benchdatanew.(field1).(field2).MinBag = MinBag;
                     % benchdatanew.(field1).(field2).(field3).MinBag = MinBag;
                 else
                     if MinFvalNew ~= options.BadLogLikelihood
@@ -304,13 +318,21 @@ for iFig = 1:nfigs
                 end
                 
                 itersPerRun = cellfun(@length,FunCallsPerIter);
-                display(['Average # of algorithm starts per run: ' num2str(mean(itersPerRun)) ' ± ' num2str(std(itersPerRun)) '.']);
+                display(['Average # of algorithm starts per run: ' num2str(mean(itersPerRun)) ' ± ' num2str(std(itersPerRun)) '.']);                
                 display(['Average overhead per function call: ' num2str(mean(AverageOverhead),'%.3f') ' ± ' num2str(std(AverageOverhead),'%.3f') '.']);                
+                
+                if any(AverageOverhead < 0)
+                    pause
+                end
                 
                 if ~isempty(history)
 
                     if options.Noisy
-                        [xx,yy,yyerr,MeanMinFval] = plotNoisy(y,MinBag,iLayer,varargin{dimlayers},options);
+                        if ~isempty(MinBag.fval)
+                            [xx,yy,yyerr,MeanMinFval] = plotNoisy(y,MinBag,iLayer,varargin{dimlayers},options);
+                        else
+                            [xx,yy,yyerr,MeanMinFval] = plotNoisy(y,NewMinBag,iLayer,varargin{dimlayers},options);
+                        end
                     else
                         [xx,yy,yyerr] =  plotIterations(x,y,D,MinFval,iLayer,varargin{dimlayers},options);
                     end
@@ -335,6 +357,14 @@ for iFig = 1:nfigs
                         TotalFunctionTime/TotalTrials;
                 end
                 
+            end
+            
+            if options.Noisy
+                benchdatanew.(field1).(field2).MinBag = NewMinBag;                
+                if any(size(MinBag.fval) ~= size(NewMinBag.fval)) || ...
+                    any(MinBag.fval ~= NewMinBag.fval)
+                    StatMismatch = StatMismatch + 1;
+                end
             end
             
             if options.Noisy
@@ -630,9 +660,10 @@ function [xx,yy,yyerr,MeanMinFval] = plotNoisy(y,MinBag,iLayer,arglayer,options)
             fmin = min(fval + fsd.*randn(size(fsd)),[],1);
             MeanMinFval = nanmean(fmin);
             d = bsxfun(@minus, f1, fmin);
-            target = nanmean(bsxfun(@lt, d(:), options.SolveThreshold(:)'),2);            
-            yy = nanmean(target);
-            yyerr = stderr(target);
+            % target = nanmean(bsxfun(@lt, d(:), options.SolveThreshold(:)'),2);            
+            target = bsxfun(@lt, d(:), options.SolveThreshold(:)');     
+            yy = nanmean(target,1);
+            yyerr = stderr(target,[],1);
     end
 
     plotErrorBar = options.ErrorBar;
@@ -641,7 +672,13 @@ function [xx,yy,yyerr,MeanMinFval] = plotNoisy(y,MinBag,iLayer,arglayer,options)
     end
     if iLayer == numel(arglayer); lw = 4; else lw = 2; end
     
-    h = bar(xx,yy,'LineStyle','none','FaceColor',lincol(iLayer,:)); hold on;
+    if size(yy,2) == 1
+        h = bar(xx,yy,'LineStyle','none','FaceColor',lincol(iLayer,:)); hold on;
+    else
+        xx = options.SolveThreshold;
+        h = plot(xx,yy,'LineStyle','-','Color',lincol(iLayer,:)); hold on;
+    end
+    
     % h = errorbar(xx,yy,yyerr,linstyle{iLayer},'Color', lincol(iLayer,:),'LineWidth',lw); hold on;
     
     

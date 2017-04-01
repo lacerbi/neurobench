@@ -43,8 +43,17 @@ for iFile = 1:length(filesearch)
         temp = [];
         warning(['Error loading file ' filename '.']);
     end
-    if ~isfield(temp,'history'); continue; end
-    for i = 1:length(temp.history); history{end+1} = temp.history{i}; end
+    if ~isfield(temp,'history'); continue; end    
+    if isfield(temp,'speedtest')
+        t = temp.speedtest.start(:,1:4) + temp.speedtest.end(:,1:4);
+        speedtest = sum(t(:));
+    else
+        speedtest = NaN;
+    end    
+    for i = 1:length(temp.history)
+        temp.history{i}.speedtest = speedtest;
+        history{end+1} = temp.history{i};
+    end
 end
 
 end

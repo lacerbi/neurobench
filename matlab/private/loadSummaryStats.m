@@ -1,6 +1,7 @@
 function [benchdata,MinFval,MinBag] = loadSummaryStats(fileName,benchlist,layers,dimlayers,Noisy)
 
 MinFval = Inf;
+MinBag = [];
 if Noisy; MinBag.fval = []; MinBag.fsd = []; end
 
 % Read summary statistics from benchmark file if present
