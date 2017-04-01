@@ -21,7 +21,7 @@ switch algoset
     case {11,'matern5'}; algoset = 'matern5'; algoptions.gpdefFcn = '{@gpdefBads,''matern5'',1}';        
     case {12,'sqexp'}; algoset = 'sqexp'; algoptions.gpdefFcn = '{@gpdefBads,''se'',1}';        
     case {21,'acqpi'}; algoset = 'acqpi'; algoptions.PollAcqFcn = '@acqNegPI'; algoptions.SearchAcqFcn = '@acqNegPI';        
-    case {22,'acqlcb'}; algoset = 'acqlcb'; algoptions.PollAcqFcn = '@acqLCB'; algoptions.SearchAcqFcn = '@acqLCB';
+    case {22,'acqlcb'}; algoset = 'acqlcb'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
