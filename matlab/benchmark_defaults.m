@@ -1,4 +1,4 @@
-function defaults = benchmark_defaults(type,probstruct,options)
+function defaults = benchmark_defaults(type,probstruct,options,varargin)
 %BENCHMARK_DEFAULTS Return default options structure.
 
 if nargin < 2; probstruct = []; end
@@ -60,4 +60,126 @@ switch lower(type)
         defaults.CandidateX = 3;            % Maximum candidate best point per optimization iteration 
         defaults.TrueMinFval = NaN;
 
+    case {'plot'}
+        defaults.BestOutOf = 1;
+        defaults.NumZero = 1e-3;
+        defaults.Method = 'FS';
+        % defaults.Method = 'IR';
+        defaults.SolveThreshold = 10.^(1:-0.1:-2);
+%        defaults.VerticalThreshold = 500;
+        defaults.Noisy = 0;
+        defaults.UnknownMin = 0;
+        defaults.DisplayFval = 1;
+        defaults.FunEvalsPerD = 500;
+        
+    case {'plot_noisy'}
+        defaults.BestOutOf = 1;
+        defaults.NumZero = 1e-2;
+        defaults.Method = 'FS';
+        defaults.SolveThreshold = 10.^(1:-0.1:-1);
+%        defaults.VerticalThreshold = 500;
+        defaults.Noisy = 1;
+        defaults.UnknownMin = 0;
+        defaults.DisplayFval = 1;        
+        defaults.FunEvalsPerD = 200;
+        
+    case 'style'
+        name = varargin{1};
+        sep = find(name == '_',1);
+        name(1:sep) = [];
+        sep = find(name == '_',1);
+        algo = name(1:sep-1);
+        algoset = name(sep+1:end);
+        
+        line_deterministic = '-';
+        line_stochastic = '--';
+        
+        defaults.color = [0 0 0]/255;
+        defaults.linewidth = 2;
+        defaults.linestyle = line_deterministic;
+        defaults.marker = '';
+        
+        switch algo            
+            case 'bads'
+                switch algoset
+                    case {'base','x2'}; defaults.color = [128 71 10]/255; defaults.marker = '*'; defaults.linewidth = 2; defaults.linestyle = '--';
+                    case 'matern5'; defaults.color = [62 22 81]/255; defaults.marker = 'o'; defaults.linewidth = 2; defaults.linestyle = ':';
+                    case 'acqlcb'; defaults.color = [0 0 0]/255; defaults.marker = ''; defaults.linewidth = 4; defaults.linestyle = '-.';
+                end
+
+            case 'fminsearch'
+                defaults.color = [240 198 114]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = line_deterministic;
+                defaults.marker = 'v';
+                
+            case 'fmincon'
+                switch algoset
+                    case {'base','actset'}; defaults.color = [251 128 114]/255; defaults.marker = 'o';
+                    case 'sqp'; defaults.color = [114 128 251]/255; defaults.marker = 's';
+                    case 'intpoint'; defaults.color = [128 251 114]/255; defaults.marker = 'd';
+                end
+                defaults.linewidth = 2;
+                defaults.linestyle = line_deterministic;
+
+            case 'patternsearch'
+                defaults.color = [128 177 211]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = line_deterministic;
+                defaults.marker = '+';
+                
+            case 'mcs'
+                defaults.color = [253 180 98]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = line_deterministic;
+                defaults.marker = 's';
+                
+            case 'snobfit'
+                defaults.color = [183 120 38]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = line_deterministic;
+                defaults.marker = '>';                
+
+            case 'global'
+                defaults.color = [60 220 200]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = '--';
+                defaults.marker = 'x';
+
+            case 'cmaes'
+                switch algoset
+                    case 'base'; defaults.color = [188 128 189]/255; defaults.marker = 'o';
+                    case 'noisy'; defaults.color = [255 128 189]/255; defaults.marker = '*';
+                    case 'active'; defaults.color = [188 223 166]/255; defaults.marker = 'h';
+                end
+                defaults.linewidth = 2;
+                defaults.linestyle = ':';
+                
+            case 'particleswarm'
+                defaults.color = [165 211 195]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = ':';
+                defaults.marker = '^';
+                
+            case 'ga'
+                defaults.color = [159 212 105]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = ':';
+                defaults.marker = '*';
+
+            case 'simulannealbnd'
+                defaults.color = [252 205 229]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = ':';
+                defaults.marker = 'd';                
+                
+            case 'randsearch'
+                defaults.color = [150 150 150]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = ':';
+                defaults.marker = '.';                
+                
+                
+        end
+        
 end

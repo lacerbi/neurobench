@@ -6,7 +6,7 @@ if Noisy; MinBag.fval = []; MinBag.fsd = []; end
 
 % Read summary statistics from benchmark file if present
 if exist(fileName,'file')
-    load(fileName);
+    load(fileName,'benchdata');
 
     for iLayer = 1:numel(layers)
         benchlist{dimlayers} = layers{iLayer};

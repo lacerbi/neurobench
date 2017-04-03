@@ -42,6 +42,7 @@ defopts.TwoRows = 0;
 defopts.EnhanceLine = 'last';   % Enhance one plotted line
 defopts.UnknownMin = false;     % Force minimum being unknown
 defopts.BadLogLikelihood = 5e3; % Arbitrary score for bad log likelihood
+defopts.FunEvalsPerD = 500;
 
 % Plotting options
 defopts.YlimMax = 1e3;
@@ -103,6 +104,22 @@ end
 for i = 1:numel(labels); benchlist{i} = []; end
 
 dimlayers = [];
+
+% Load data from file
+data = [];
+try
+    if exist(options.FileName,'file') == 2
+        load(options.FileName,'data');
+        fprintf('Loaded stored data from file.\n');
+        LoadedData_flag = true;
+    end
+catch
+    % Did not work
+end
+if isempty(data)
+    fprintf('Stored data file does not exist. Loading raw data...\n');
+    LoadedData_flag = false;
+end
 
 % Loop over figures
 for iFig = 1:nfigs
@@ -174,8 +191,19 @@ for iFig = 1:nfigs
                 
                 % Collect history structs from data files
                 benchlist{dimlayers} = varargin{dimlayers}{iLayer};
-                display([benchlist{dimrows} '@' benchlist{dimcols} '@' benchlist{dimlayers}]);
-                [history,algo,algoset] = collectHistoryFiles(benchlist);
+                fieldname = [benchlist{dimrows} '_' benchlist{dimcols} '_' benchlist{dimlayers}];
+                fieldname(fieldname == '@') = '_';
+                if LoadedData_flag && isfield(data,fieldname)
+                    history = data.(fieldname).history;
+                    algo = data.(fieldname).algo;
+                    algoset = data.(fieldname).algoset;
+                else
+                    fprintf('Collecting files: %s@%s@%s\n', benchlist{dimrows}, benchlist{dimcols}, benchlist{dimlayers});
+                    [history,algo,algoset] = collectHistoryFiles(benchlist);
+                    data.(fieldname).history = history;
+                    data.(fieldname).algo = algo;
+                    data.(fieldname).algoset = algoset;
+                end
                 if isempty(history); continue; end
         
                 x = []; y = []; D = []; FunCallsPerIter = [];
@@ -223,12 +251,11 @@ for iFig = 1:nfigs
                         ynew(isnan(ynew)) = min(ynew);
                         ynew(ynew == options.BadLogLikelihood) = Inf;
                         if options.Noisy
-                            %[~,index] = min(history{i}.Output.fval);
-                            %y = [y; history{i}.Output.fval(index) history{i}.Output.fsd(index)];
+                            [~,index] = min(history{i}.Output.fval);
                             if IsMinKnown
-                                y = [y; history{i}.Output.fval - history{i}.TrueMinFval, history{i}.Output.fsd];
+                                y = [y; history{i}.Output.fval(index) - history{i}.TrueMinFval, history{i}.Output.fsd(index)];
                             else
-                                y = [y; history{i}.Output.fval, history{i}.Output.fsd]; 
+                                y = [y; history{i}.Output.fval(index), history{i}.Output.fsd(index)];
                             end
                         else
                             y = [y; ynew];
@@ -321,9 +348,9 @@ for iFig = 1:nfigs
                 display(['Average # of algorithm starts per run: ' num2str(mean(itersPerRun)) ' ± ' num2str(std(itersPerRun)) '.']);                
                 display(['Average overhead per function call: ' num2str(mean(AverageOverhead),'%.3f') ' ± ' num2str(std(AverageOverhead),'%.3f') '.']);                
                 
-                if any(AverageOverhead < 0)
-                    pause
-                end
+%                 if any(AverageOverhead < 0)
+%                     pause
+%                 end
                 
                 if ~isempty(history)
 
@@ -440,7 +467,7 @@ end
 benchdata = benchdatanew;
 benchdata.options = options;
 
-save(options.FileName,'benchdata');
+save(options.FileName,'benchdata','data');
 
 %--------------------------------------------------------------------------
 function [xx,yy,yyerr] = plotIterations(x,y,D,MinFval,iLayer,arglayer,options)
@@ -650,16 +677,22 @@ function [xx,yy,yyerr,MeanMinFval] = plotNoisy(y,MinBag,iLayer,arglayer,options)
             %yyerr = abs(bsxfun(@minus,[quantile(y,0.75,1);quantile(y,0.25,1)],yy));
         case 'fs'
             n = size(y,1);
-            nn = 1000;
-            Nsamples = numel(MinBag.fval);
-            y = repmat(y, [ceil(Nsamples/n) 1]);
-            y = y(randperm(Nsamples),:);
-            fval = repmat(MinBag.fval,[1 nn]);
-            fsd = repmat(MinBag.fsd,[1 nn]);
-            f1 = bsxfun(@plus,y(:,1),bsxfun(@times,y(:,2),randn(size(y,1),nn)));
-            fmin = min(fval + fsd.*randn(size(fsd)),[],1);
-            MeanMinFval = nanmean(fmin);
-            d = bsxfun(@minus, f1, fmin);
+            
+            if all(MinBag.fsd == 0) && all(y(:,2) == 0)
+                MeanMinFval = min(MinBag.fval);
+                d = y(:,1) - MeanMinFval;                
+            else            
+                nn = 1000;
+                Nsamples = numel(MinBag.fval);
+                y = repmat(y, [ceil(Nsamples/n) 1]);
+                y = y(randperm(Nsamples),:);
+                fval = repmat(MinBag.fval,[1 nn]);
+                fsd = repmat(MinBag.fsd,[1 nn]);
+                f1 = bsxfun(@plus,y(:,1),bsxfun(@times,y(:,2),randn(size(y,1),nn)));
+                fmin = min(fval + fsd.*randn(size(fsd)),[],1);
+                MeanMinFval = nanmean(fmin);
+                d = bsxfun(@minus, f1, fmin);
+            end
             % target = nanmean(bsxfun(@lt, d(:), options.SolveThreshold(:)'),2);            
             target = bsxfun(@lt, d(:), options.SolveThreshold(:)');     
             yy = nanmean(target,1);
