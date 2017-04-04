@@ -38,8 +38,8 @@ PROBSET="'cec14'"
 DIMS="{'3D','6D','10D','15D'}"
 NOISE="'[]'"
 #ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global'}"
-ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','fmincon@actset','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global'}"
-ALGOS_NOISY="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','fmincon@actset','patternsearch','particleswarm','cmaes','mcs','randsearch','bipopcmaes','global','snobfit','cmaes@noisy'}"
+ALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','fmincon@actset','patternsearch','particleswarm','cmaes','mcs','randsearch','global'}"
+ALGOS_NOISY="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','fmincon@actset','patternsearch','particleswarm','cmaes','mcs','randsearch','global','snobfit','cmaes@noisy'}"
 BESTALGOS="{'ga','simulannealbnd','fminsearch','fmincon','fmincon@sqp','patternsearch','particleswarm','cmaes','mcs','global'}"
 NOISEALGOS="{'ga','simulannealbnd','fminsearch','patternsearch','particleswarm','cmaes','cmaes@noisy','mcs','global','snobfit','randsearch'}"
 ALGOSET="'base'"
@@ -113,7 +113,7 @@ case "${1}" in
                 ;;
         54)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
-                ALGOS="{'bads'}"
+                ALGOS="{'cmaes@active'}"
                 IDS="{'1:10','11:20','21:30','31:40','41:50'}"
                 ;;
         55)     PROBSET="{'bbob09'}"
@@ -173,7 +173,7 @@ case "${1}" in
                 ;;
         65)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
-                ALGOS="{'snobfit'}"
+                ALGOS="{'cmaes@active'}"
                 IDS="{'1:10','11:20','21:30','31:40','41:50'}"
                 NOISE="{'me'}"
                 ;;
@@ -216,6 +216,12 @@ case "${1}" in
         74)     PROBSET="{'bbob09'}"
                 PROBS=${BBOB09}
                 ALGOS="{'bads@acqlcb'}"
+                IDS="{'1:10','11:20','21:30','31:40','41:50'}"
+                NOISE="{'heme'}"
+                ;;
+        75)     PROBSET="{'bbob09'}"
+                PROBS=${BBOB09}
+                ALGOS="{'cmaes@active'}"
                 IDS="{'1:10','11:20','21:30','31:40','41:50'}"
                 NOISE="{'heme'}"
                 ;;
