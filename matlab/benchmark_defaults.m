@@ -115,9 +115,9 @@ switch lower(type)
                 
             case 'fmincon'
                 switch algoset
-                    case {'base','actset'}; defaults.color = [251 128 114]/255; defaults.marker = 'o';
+                    case {'base','ip'}; defaults.color = [251 128 114]/255; defaults.marker = 'o';
                     case 'sqp'; defaults.color = [114 128 251]/255; defaults.marker = 's';
-                    case 'intpoint'; defaults.color = [128 251 114]/255; defaults.marker = 'd';
+                    case 'actset'; defaults.color = [128 251 114]/255; defaults.marker = 'd';
                 end
                 defaults.linewidth = 2;
                 defaults.linestyle = line_deterministic;

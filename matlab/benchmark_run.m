@@ -84,6 +84,7 @@ for iRun = 1:length(idlist)
     remainingFunEvals = probstruct.MaxFunEvals;
     probstruct.nIters = 0;
     FunCallsPerIter = 0;
+    FirstPoint = [];    % First starting point of the run
     x = []; fval = []; fse = []; t = [];
     
     % Loop until out of budget of function evaluations
@@ -101,10 +102,11 @@ for iRun = 1:length(idlist)
             else
                 probstruct.InitPoint = probstruct.TrueMinX;
             end
-        end    
+        end
         if isempty(probstruct.InitPoint)
             probstruct.InitPoint = rand(1,probstruct.D).*diff(probstruct.InitRange) + probstruct.InitRange(1,:);
         end
+        if isempty(FirstPoint); FirstPoint = probstruct.InitPoint; end
         
         algofun = str2func(['algorithm_' algo]);
         [history{iRun},xnew,fvalnew,algoptions] = algofun(algo,algoset,probstruct);   % Run optimization
@@ -154,6 +156,7 @@ for iRun = 1:length(idlist)
         end
     end
     
+    history{iRun}.X0 = FirstPoint;
     history{iRun}.FunCallsPerIter = FunCallsPerIter(2:end);
     history{iRun}.Algorithm = algo;
     history{iRun}.AlgoSetup = algoset;
@@ -252,14 +255,14 @@ end
 % Get non-noisy or approximate function value for noisy functions
 if ~isempty(probstruct.Noise) || probstruct.IntrinsicNoisy
     for iPoint = 1:size(x,1)
-        x0 = x(iPoint,:);
+        x_end = x(iPoint,:);
         if ~probstruct.IntrinsicNoisy        % Only added noise
-            fval(iPoint) = benchmark_func(x0,probstruct,1);
+            fval(iPoint) = benchmark_func(x_end,probstruct,1);
         else                                % Noisy function
             temp = zeros(1,probstruct.AvgSamples);
             temp(1) = fval(iPoint);
             for iSample = 2:probstruct.AvgSamples
-                temp(iSample) = benchmark_func(x0,probstruct,1);
+                temp(iSample) = benchmark_func(x_end,probstruct,1);
                 % If SE of current samples is less than TolFun,
                 % stop (collect at least four samples)
                 tempse = stderr(temp(1:iSample));
