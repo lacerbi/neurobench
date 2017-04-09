@@ -81,6 +81,17 @@ for iRun = 1:length(idlist)
     mkdir([options.RootDirectory filesep directoryname filesep subdirectoryname]);
     cd([options.RootDirectory filesep directoryname filesep subdirectoryname]);
     
+    % Copy local data file to execution folder
+    if isfield(probstruct,'LocalDataFile') && ~isempty(probstruct.LocalDataFile)
+        targetfile = [options.RootDirectory filesep directoryname filesep subdirectoryname filesep probstruct.LocalDataFile];
+        if ~exist(targetfile,'file')
+            display(['Copying data file ' probstruct.LocalDataFile ' to local folder.']);
+            copyfile(probstruct.LocalDataFile,targetfile);
+        else
+            display(['Data file ' probstruct.LocalDataFile ' already exists in local folder.']);
+        end
+    end
+    
     remainingFunEvals = probstruct.MaxFunEvals;
     probstruct.nIters = 0;
     FunCallsPerIter = 0;

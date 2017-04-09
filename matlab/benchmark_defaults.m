@@ -59,6 +59,7 @@ switch lower(type)
         defaults.AvgSamples = 200;          % Max # samples for estimating min fval of noisy functions
         defaults.CandidateX = 3;            % Maximum candidate best point per optimization iteration 
         defaults.TrueMinFval = NaN;
+        defaults.LocalDataFile = [];        % Local data file to be moved to each local folder
 
     case {'plot'}
         defaults.BestOutOf = 1;
