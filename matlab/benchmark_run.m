@@ -74,23 +74,25 @@ for iRun = 1:length(idlist)
     % Initialize current problem
     probstruct = problem_init(probset,prob,subprob,noise,idlist(iRun),options);
     
-    % Move to working dir
+    % Create working dir
     directoryname = [probstruct.ProbSet charsep probstruct.Prob];
     subdirectoryname = [probstruct.SubProb noisestring];
     mkdir([options.RootDirectory filesep directoryname]);
     mkdir([options.RootDirectory filesep directoryname filesep subdirectoryname]);
-    cd([options.RootDirectory filesep directoryname filesep subdirectoryname]);
     
-    % Copy local data file to execution folder
+    % Copy local data file to working dir
     if isfield(probstruct,'LocalDataFile') && ~isempty(probstruct.LocalDataFile)
         targetfile = [options.RootDirectory filesep directoryname filesep subdirectoryname filesep probstruct.LocalDataFile];
         if ~exist(targetfile,'file')
             display(['Copying data file ' probstruct.LocalDataFile ' to local folder.']);
-            copyfile(probstruct.LocalDataFile,targetfile);
+            copyfile([ '.' filesep probstruct.LocalDataFile],targetfile);
         else
             display(['Data file ' probstruct.LocalDataFile ' already exists in local folder.']);
         end
     end
+    
+    % Move to working dir
+    cd([options.RootDirectory filesep directoryname filesep subdirectoryname]);    
     
     remainingFunEvals = probstruct.MaxFunEvals;
     probstruct.nIters = 0;
