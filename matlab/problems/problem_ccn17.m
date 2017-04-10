@@ -86,6 +86,7 @@ switch probstruct.Family
         probstruct.MaxFunEvals = 2000;  % Limit fun evals
         probstruct.IntrinsicNoisy = 1;  % Noisy problem
         probstruct.AvgSamples = 200;    % Samples at the end of run
+        probstruct.CandidateX = 10;     % Number of candidate points
         probstruct.LocalDataFile = 'times.txt';
 
     case 'targetloc'    % Mihali et al. (in preparation) target localization
