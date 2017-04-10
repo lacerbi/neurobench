@@ -7,6 +7,7 @@ algoptions.stop = Inf;                     % Never stop
 switch algoset
     case {1,'base'}; algoset = 'base'; % Use defaults
     case {2,'deep'}; algoset = 'deep'; algoptions.smax = 10*probstruct.D; % Go deeper
+    case {101,'gomoku'}; algoset = 'gomoku'; algoptions.smax = probstruct.D + 5; algoptions.stop = [probstruct.D,-Inf];   % Defaults used by van Opheusden et al. (2016)
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
 end
