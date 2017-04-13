@@ -18,6 +18,7 @@ switch algoset
     case {6,'x4'}; algoset = 'x4'; algoptions.SearchGridNumber = 5; algoptions.PollMeshMultiplier = 4;        
     case {7,'forcepoll'}; algoset = 'forcepoll'; algoptions.SearchGridNumber = 10; algoptions.PollMeshMultiplier = 2; algoptions.ForcePollMesh = 1;        
     case {8,'svgd'}; algoset = 'svgd'; algoptions.gpSamples = 10;
+    case {9,'nearest'}; algoset = 'nearest'; algoptions.gpMethod = 'nearest';        
     case {11,'matern5'}; algoset = 'matern5'; algoptions.gpdefFcn = '{@gpdefBads,''matern5'',1}';        
     case {12,'sqexp'}; algoset = 'sqexp'; algoptions.gpdefFcn = '{@gpdefBads,''se'',1}';        
     case {21,'acqpi'}; algoset = 'acqpi'; algoptions.PollAcqFcn = '@acqNegPI'; algoptions.SearchAcqFcn = '@acqNegPI';        
