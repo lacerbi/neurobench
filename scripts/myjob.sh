@@ -8,7 +8,7 @@ if [ ${CLUSTER} = "Mercer" ]; then
 	module load matlab gcc
 	export LD_PRELOAD=$GCC_LIB/libstdc++.so
 else
-	module load matlab
+	module load matlab/2015b
 fi
 export MATLABPATH=${MATLABPATH}:/${HOME}/${PROJECT}/matlab:${HOME}/MATLAB
 source ${HOME}/MATLAB/setpath.sh
