@@ -20,6 +20,8 @@ algoptions.LogTime      = 0;
 switch algoset
     case {1,'base'}; algoset = 'base'; % Use defaults
     case {2,'active'}; algoset = 'active'; algoptions.CMA.Active = 1;
+    case {11,'base-lhs'}; algoset = 'base-lhs'; algoptions.Ninit = nvars;
+    case {12,'active-lhs'}; algoset = 'active-lhs'; algoptions.CMA.Active = 1; algoptions.Ninit = nvars;       
     case {100,'noisy'}; algoset = 'noisy'; algoptions.Noise.on = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
@@ -41,6 +43,9 @@ insigma = (probstruct.InitRange(2,:) - probstruct.InitRange(1,:))'/sqrt(12);
 % Change population size based on iteration number (restarts)
 N = length(x0);
 algoptions.PopSize = eval(algoptions.PopSize)*(algoptions.IncPopSize^(probstruct.nIters-1));
+
+% Initial LHS design if Ninit > 0 (otherwise just returns X0)
+x0 = algorithm_lhsinit(x0,PLB,PUB,algoptions,probstruct);
 
 [~,~,counteval,stopflag,out] = ...
     cmaes('benchmark_func',x0,insigma,algoptions,probstruct);
