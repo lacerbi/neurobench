@@ -1,5 +1,7 @@
 function [history,x,fval,algoptions] = algorithm_cmaes(algo,algoset,probstruct)
 
+nvars = probstruct.D;
+
 algoptions.TolFun = probstruct.TolFun;             % Standard TolFun
 algoptions.MaxFunEvals  = probstruct.MaxFunEvals; % Maximal number of fevals
 algoptions.MaxIter      = Inf;                       % No iteration limit
