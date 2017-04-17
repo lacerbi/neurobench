@@ -2578,7 +2578,7 @@ end % function
 
 %%%-------------------------------------------------------------%%%
 function [Fval, Ftrue] = f26(x, DIM, ntrial)
-% discus (tablet) with monotone transformation, condition 1e6
+% discus (tablet) with monotone transformation, condition 1e3
 % last change: 08/12/10
   persistent Fopt Xopt scales linearTF rotation
   persistent lastSize arrXopt arrScales arrExpo rseed
@@ -2662,7 +2662,7 @@ end % function
 
 %%%-------------------------------------------------------------%%%
 function [Fval, Ftrue] = f27(x, DIM, ntrial)
-% bent cigar with asymmetric space distortion, condition 1e6 
+% bent cigar with asymmetric space distortion, condition 1e3 
 % last change: 08/12/11
   persistent Fopt Xopt scales linearTF rotation
   persistent lastSize arrXopt arrScales arrExpo rseed

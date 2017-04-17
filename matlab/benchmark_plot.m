@@ -193,6 +193,7 @@ for iFig = 1:nfigs
                 benchlist{dimlayers} = varargin{dimlayers}{iLayer};
                 fieldname = [benchlist{dimrows} '_' benchlist{dimcols} '_' benchlist{dimlayers}];
                 fieldname(fieldname == '@') = '_';
+                fieldname(fieldname == '-') = '_';
                 if LoadedData_flag && isfield(data,fieldname)
                     history = data.(fieldname).history;
                     algo = data.(fieldname).algo;
@@ -204,6 +205,8 @@ for iFig = 1:nfigs
                     data.(fieldname).algo = algo;
                     data.(fieldname).algoset = algoset;
                 end
+                algoset(algoset == '-') = '_';
+                
                 if isempty(history); continue; end
         
                 x = []; y = []; D = []; FunCallsPerIter = [];
@@ -319,6 +322,7 @@ for iFig = 1:nfigs
                 field1 = ['f1_' benchlist{1} '_' benchlist{2}];
                 field2 = ['f2_' upper(benchlist{3}) noise];
                 field3 = ['f3_' algo '_' algoset];
+                
                 if options.Noisy
                     % benchdatanew.(field1).(field2).(field3).MinBag = MinBag;
                 else

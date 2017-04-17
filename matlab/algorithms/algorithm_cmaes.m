@@ -26,6 +26,7 @@ switch algoset
     case {11,'base-lhs'}; algoset = 'base-lhs'; algoptions.Ninit = nvars;
     case {12,'active-lhs'}; algoset = 'active-lhs'; algoptions.CMA.Active = 1; algoptions.Ninit = nvars;       
     case {100,'noisy'}; algoset = 'noisy'; algoptions.Noise.on = 1;
+    case {101,'actnoisy'}; algoset = 'actnoisy'; algoptions.CMA.Active = 1; algoptions.Noise.on = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
 end

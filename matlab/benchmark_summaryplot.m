@@ -193,14 +193,15 @@ switch lower(options.Method)
         xstring = 'Fun evals / Dim';
         ystring = 'Median IR';
     case 'fs'
-        xstring = 'Fun evals / Dim';
+        xstring = 'Function evaluations / D';
         ystring = 'Fraction solved';
     case 'ert'
         xstring = 'FEvals / Dim';
         ystring = 'Fraction solved';        
     case 'fst'
-        xstring = 'Error tolerance from maximum LL';
-        if isfield(options,'FunEvalsPerD')
+        % xstring = 'Error tolerance from maximum LL';
+        xstring = ['Error tolerance ' char(949)];
+        if isfield(options,'FunEvalsPerD') && ~isempty(options.FunEvalsPerD)
             ystring = ['Fraction solved at ' num2str(options.FunEvalsPerD) ' ×D fun evals'];
         else
             ystring = 'Fraction solved';            
