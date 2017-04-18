@@ -26,7 +26,7 @@ switch algoset
     case {23,'acqpi_m5'}; algoset = 'acqpi_m5'; algoptions.PollAcqFcn = '@acqNegPI'; algoptions.SearchAcqFcn = '@acqNegPI'; algoptions.gpdefFcn = '{@gpdefBads,''matern5'',1}';        
     case {24,'acqlcb_m5'}; algoset = 'acqlcb_m5'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.gpdefFcn = '{@gpdefBads,''matern5'',1}';
     case {29,'acqhedge'}; algoset = 'acqhedge'; algoptions.AcqHedge = 'on';
-    case {31,'lbcnearest'}; algoset = 'lcbnearest'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
+    case {31,'lcbnearest'}; algoset = 'lcbnearest'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
