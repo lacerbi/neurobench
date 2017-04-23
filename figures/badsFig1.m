@@ -1,5 +1,6 @@
 % Make Figure 1 for BADS whitepaper
 
+figure(1); clf;
 currentDir = pwd();
 
 % Folder that contains benchmark data

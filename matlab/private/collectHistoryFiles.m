@@ -1,4 +1,6 @@
-function [history,algo,algoset] = collectHistoryFiles(benchlist)
+function [history,algo,algoset,flags] = collectHistoryFiles(benchlist)
+
+flags = 0;  % Overhead flag
 
 if isempty(benchlist{4}); noise = [];
 else noise = ['@' benchlist{4} 'noise']; end
@@ -19,7 +21,12 @@ if ~isempty(benchlist{5})
         algoset = benchlist{6};
     end
     if isempty(algoset); algoset = 'base'; end
-    basefilename = [algo '@' algoset '@*.mat'];
+    algoset_file = algoset;
+    if numel(algoset) > 9 && strcmp(algoset(end-8:end), '_overhead')
+        algoset_file = algoset(1:end-9);
+        flags(1) = 1;
+    end
+    basefilename = [algo '@' algoset_file '@*.mat'];
 else
     algo = [];
     algoset = [];
