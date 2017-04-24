@@ -39,6 +39,8 @@ switch algoset
     case {29,'acqhedge'}; algoset = 'acqhedge'; algoptions.AcqHedge = 'on';
     case {31,'lcbnearest'}; algoset = 'lcbnearest'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
     case {32,'onesearch'}; algoset = 'onesearch'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.SearchNtry = 1;
+    case {33,'searchwcm'}; algoset = 'searchwcm'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.SearchMethod = {@searchES,1,1};
+    case {34,'searchell'}; algoset = 'searchell'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.SearchMethod = {@searchES,2,1};
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
