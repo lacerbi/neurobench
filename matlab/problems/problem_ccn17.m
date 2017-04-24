@@ -17,7 +17,7 @@ probstruct.Title = probstruct.Prob;
 % Setup problem
 switch probstruct.Number
     case 1
-        % Models: 1-11 Fixed, 12-22 Bayesian
+        % Models: 1-11 Fixed, 12-22 Bayesian (D = 10)
         temp = load('visvest-joint-mfits.mat');
         nSubjs = numel(temp.joint_bay);                
         nid = mod(S-1,nSubjs) + 1;
@@ -30,27 +30,27 @@ switch probstruct.Number
         probstruct.mfit = mfit;
         probstruct.Family = 'visvest';
                 
-    case 10 % van den Berg (2017) working memory model with confidence
+    case 10 % van den Berg (2017) working memory model with confidence (D = 6, 9)
         probstruct.Family = 'vandenberg2016';   % Year is off by one
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'vandenberg2016']);
 
-    case 20 % Adler and Ma (2016) perceptual confidence Bayesian model
+    case 20 % Adler and Ma (2016) perceptual confidence Bayesian model (D = 13)
         probstruct.Family = 'adler2016';        % Year is off by one
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'adler2016']);
 
-    case 30 % Goris et al. (2015) neural LN-LN model (tuning diversity)
+    case 30 % Goris et al. (2015) neural LN-LN model (tuning diversity) (D = 12)
         probstruct.Family = 'goris2014';        % Year is off by one
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'goris2014']);
 
-    case 40 % van Opheusden et al. (2016) Gomoku model
+    case 40 % van Opheusden et al. (2016) Gomoku model (D = 10)
         probstruct.Family = 'vanopheusden2016';
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'vanopheusden2016']);
         
-    case 50 % Mihali et al. (in preparation) target localization
+    case 50 % Mihali et al. (in preparation) target localization (D = 6)
         probstruct.Family = 'targetloc';
         mypath = fileparts(mfilename('fullpath'));
         addpath([mypath,filesep,'CCN17',filesep,'targetloc']);

@@ -103,9 +103,17 @@ switch lower(type)
         switch algo            
             case 'bads'
                 switch algoset
-                    case {'base','x2'}; defaults.color = [128 71 10]/255; defaults.marker = '*'; defaults.linewidth = 2; defaults.linestyle = '--';
-                    case 'matern5'; defaults.color = [62 22 81]/255; defaults.marker = 'o'; defaults.linewidth = 2; defaults.linestyle = ':';
-                    case 'acqlcb'; defaults.color = [0 0 0]/255; defaults.marker = ''; defaults.linewidth = 4; defaults.linestyle = '-.';
+                    case {'base','x2','nearest'}; defaults.color = [0 100 140]/255; defaults.marker = '*'; defaults.linewidth = 2; defaults.linestyle = '-.';
+                    case 'matern5'; defaults.color = [0 100 140]/255; defaults.marker = 'v'; defaults.linewidth = 2; defaults.linestyle = ':';
+                    case 'sqexp'; defaults.color = [0 100 140]/255; defaults.marker = 'o'; defaults.linewidth = 2; defaults.linestyle = '-';
+                    case 'acqlcb'; defaults.color = [0 0 0]/255; defaults.marker = ''; defaults.linewidth = 2; defaults.linestyle = '-.';
+                    case 'lcbnearest'; defaults.color = [0 0 0]/255; defaults.marker = ''; defaults.linewidth = 4; defaults.linestyle = '-.';
+                    case 'acqlcb_m5'; defaults.color = [0 0 0]/255; defaults.marker = '^'; defaults.linewidth = 2; defaults.linestyle = ':';
+                    case 'acqpi'; defaults.color = [120 100 0]/255; defaults.marker = 's'; defaults.linewidth = 2; defaults.linestyle = '-.';
+                    case 'acqpi_m5'; defaults.color = [120 100 0]/255; defaults.marker = '>'; defaults.linewidth = 2; defaults.linestyle = ':';
+                    case 'acqlcb_overhead'; defaults.color = 150*[1 1 1]/255; defaults.marker = ''; defaults.linewidth = 4; defaults.linestyle = '-.';
+                    case 'acqpi_se'; defaults.color = [120 100 0]/255; defaults.marker = '*'; defaults.linewidth = 2; defaults.linestyle = '-';
+                    case 'acqlcb_se'; defaults.color = [0 0 0]/255; defaults.marker = 'd'; defaults.linewidth = 2; defaults.linestyle = '-';
                 end
 
             case 'fminsearch'

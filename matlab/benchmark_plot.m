@@ -193,21 +193,35 @@ for iFig = 1:nfigs
                 benchlist{dimlayers} = varargin{dimlayers}{iLayer};
                 fieldname = [benchlist{dimrows} '_' benchlist{dimcols} '_' benchlist{dimlayers}];
                 fieldname(fieldname == '@') = '_';
+                fieldname(fieldname == '-') = '_';
+                flags = 0;
                 if LoadedData_flag && isfield(data,fieldname)
                     history = data.(fieldname).history;
                     algo = data.(fieldname).algo;
                     algoset = data.(fieldname).algoset;
+                    if numel(algoset) > 9 && strcmp(algoset(end-8:end), '_overhead')
+                        flags(1) = 1;                        
+                    end
                 else
                     fprintf('Collecting files: %s@%s@%s\n', benchlist{dimrows}, benchlist{dimcols}, benchlist{dimlayers});
-                    [history,algo,algoset] = collectHistoryFiles(benchlist);
+                    [history,algo,algoset,flags] = collectHistoryFiles(benchlist);
                     data.(fieldname).history = history;
                     data.(fieldname).algo = algo;
                     data.(fieldname).algoset = algoset;
                 end
+                algoset(algoset == '-') = '_';
+                                
+                if flags(1)
+                    overhead_flag = true;
+                else
+                    overhead_flag = false;
+                end
+                
                 if isempty(history); continue; end
         
                 x = []; y = []; D = []; FunCallsPerIter = [];
                 AverageOverhead = zeros(1,numel(history));
+                FractionOverhead = [];
                 TotalElapsedTime = 0;
                 TotalFunctionTime = 0;
                 TotalTrials = 0;
@@ -300,6 +314,7 @@ for iFig = 1:nfigs
                         TotalElapsedTime = TotalElapsedTime + history{i}.ElapsedTime(last)*speedfactor;
                         TotalFunctionTime = TotalFunctionTime + sum(history{i}.FuncTime(1:last))*speedfactor;
                         TotalTrials = TotalTrials + history{i}.SaveTicks(last);
+                        FractionOverhead = [FractionOverhead, (history{i}.ElapsedTime(last)/sum(history{i}.FuncTime(1:last))-1)];
 
 %                         Noisy = 0;
 %                         if isfield(history{i},'Output')
@@ -319,6 +334,7 @@ for iFig = 1:nfigs
                 field1 = ['f1_' benchlist{1} '_' benchlist{2}];
                 field2 = ['f2_' upper(benchlist{3}) noise];
                 field3 = ['f3_' algo '_' algoset];
+                
                 if options.Noisy
                     % benchdatanew.(field1).(field2).(field3).MinBag = MinBag;
                 else
@@ -361,6 +377,12 @@ for iFig = 1:nfigs
                             [xx,yy,yyerr,MeanMinFval] = plotNoisy(y,NewMinBag,iLayer,varargin{dimlayers},options);
                         end
                     else
+                        if overhead_flag
+                            for iRun = 1:size(x,1)
+                                y(iRun,:) = interp1(x(iRun,:),y(iRun,:),x(iRun,:)/(1+FractionOverhead(iRun)));
+                            end
+                            fprintf('Fraction overhead: %.3f +/- %.3f.\n', mean(FractionOverhead), std(FractionOverhead));
+                        end
                         [xx,yy,yyerr] =  plotIterations(x,y,D,MinFval,iLayer,varargin{dimlayers},options);
                     end
                     
@@ -382,6 +404,7 @@ for iFig = 1:nfigs
                         (TotalElapsedTime - TotalFunctionTime)/TotalTrials;
                     benchdatanew.(field1).(field2).(field3).AverageFunTime = ...
                         TotalFunctionTime/TotalTrials;
+                    benchdatanew.(field1).(field2).(field3).FractionOverhead = mean(FractionOverhead);                    
                 end
                 
             end

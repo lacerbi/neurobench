@@ -11,9 +11,11 @@ switch algoset
     case {2,'2','sqp'}; algoset = 'sqp'; algoptions.Algorithm = 'sqp';
     case {3,'3','actset'}; algoset = 'actset'; algoptions.Algorithm = 'active-set';
     case {4,'4','diffmin'}; algoset = 'diffmin'; algoptions.DiffMinChange = 5e-3;
-    case {5,'5','lhs'}; algoset = 'lhs'; algoptions.Ninit = nvars;
-    case {6,'6','sqplhs'}; algoset = 'sqplhs'; algoptions.Ninit = nvars; algoptions.Algorithm = 'sqp';
-    case {7,'7','shortruns'}; algoset = 'shortruns'; algoptions.MaxFunEvals = nvars*50;
+    case {5,'5','shortruns'}; algoset = 'shortruns'; algoptions.MaxFunEvals = nvars*50;
+
+    case {11,'11','base-lhs'}; algoset = 'base-lhs'; algoptions.Ninit = nvars;
+    case {12,'12','sqp-lhs'}; algoset = 'sqp-lhs'; algoptions.Ninit = nvars; algoptions.Algorithm = 'sqp';
+    case {13,'13','actset-lhs'}; algoset = 'actset-lhs'; algoptions.Ninit = nvars; algoptions.Algorithm = 'active-set';
         
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
