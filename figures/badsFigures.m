@@ -1,5 +1,5 @@
 %% Make Figures for BADS whitepaper
-function badsFig23(fig)
+function badsFigures(fig)
 
 axesfontsize = 16;
 fontsize = 24;
@@ -100,16 +100,18 @@ end
 %--------------------------------------------------------------------------
 function fixLegend(bads_flag)
 
-stringsIn =     {'bads (acqlcb)',   'bads (acqlcb-overhead)',   'bads (acqlcb-m5)', 'bads (matern5)', ...
+stringsIn =     {'bads (lcbnearest)',   'bads (lcbnearest-overhead)',   'bads (acqlcb)',   'bads (acqlcb-overhead)',   'bads (acqlcb-m5)', 'bads (matern5)', ...
         'bads',             'bads (nearest)',   'bads (sqexp)', ...
-        'bads (acqpi-m5)',  'bads (acqpi)'};
-stringsOut =    {'bads',    'bads',                             'bads (m5,lcb)',    'bads (m5,ei)', ...
+        'bads (acqpi-m5)',  'bads (acqpi)',     'bads (onesearch)'};
+stringsOut =    {'bads',    'bads', 'bads',    'bads',                             'bads (m5,lcb)',    'bads (m5,ei)', ...
         'bads (rq,ei)',     'bads (rq,ei)',     'bads (se,ei)', ...
-        'bads (m5,pi)',     'bads (rq,pi)'};
+        'bads (m5,pi)',     'bads (rq,pi)',     'bads (nsearch=1)'};
 
 if bads_flag
-    stringsOut{1} = 'bads (rq,lcb)';
-    stringsOut{2} = 'bads (rq,lcb)';
+    stringsOut{1} = 'bads (rq,lcb,default)';
+    stringsOut{2} = 'bads (rq,lcb,default)';
+    stringsOut{3} = 'bads (rq,lcb,default)';
+    stringsOut{4} = 'bads (rq,lcb,default)';
 end
     
 hl = legend();

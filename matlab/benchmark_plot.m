@@ -383,7 +383,7 @@ for iFig = 1:nfigs
                             end
                             fprintf('Fraction overhead: %.3f +/- %.3f.\n', mean(FractionOverhead), std(FractionOverhead));
                         end
-                        [xx,yy,yyerr] =  plotIterations(x,y,D,MinFval,iLayer,varargin{dimlayers},options);
+                        [xx,yy,yyerr] =  plotIterations(x,y,D,MinFval,IsMinKnown,iLayer,varargin{dimlayers},options);
                     end
                     
                     % Save summary information
@@ -493,11 +493,13 @@ benchdata.options = options;
 save(options.FileName,'benchdata','data');
 
 %--------------------------------------------------------------------------
-function [xx,yy,yyerr] = plotIterations(x,y,D,MinFval,iLayer,arglayer,options)
+function [xx,yy,yyerr] = plotIterations(x,y,D,MinFval,IsMinKnown,iLayer,arglayer,options)
 %PLOTITERATIONS Plot time series of IR or FS
 
     NumZero = options.NumZero;
     BestOutOf = options.BestOutOf;
+    
+    if IsMinKnown; MinFval = 0; end
     
     defaults = benchmark_defaults('options');
     linstyle = defaults.LineStyle;

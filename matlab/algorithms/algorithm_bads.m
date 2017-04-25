@@ -43,6 +43,7 @@ switch algoset
     case {34,'searchell'}; algoset = 'searchell'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.SearchMethod = {@searchES,2,1};
     case {35,'noscaling'}; algoset = 'noscaling'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.gpRescalePoll = 0;
     case {36,'fixednoise'}; algoset = 'fixednoise'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.MeshNoiseMultiplier = 0; algoptions.NoiseSize = algoptions.TolFun;
+    case {37,'searcheye'}; algoset = 'searcheye'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.SearchMethod = {@searchES,3,1};
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
