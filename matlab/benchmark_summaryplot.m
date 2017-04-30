@@ -101,7 +101,8 @@ for iField = 1:numel(ff)
     
     % Get performance
     if strcmpi(options.Method,'fs')
-        perf(iField) = yy(end);
+        perf(iField) = mean(yy);
+%        perf(iField) = yy(end);
     else
         perf(iField) = mean(yy);
     end

@@ -106,7 +106,7 @@ switch lower(type)
                     case {'base','x2','nearest'}; defaults.color = [0 100 140]/255; defaults.marker = '*'; defaults.linewidth = 2; defaults.linestyle = '-.';
                     case 'matern5'; defaults.color = [0 100 140]/255; defaults.marker = 'v'; defaults.linewidth = 2; defaults.linestyle = ':';
                     case 'sqexp'; defaults.color = [0 100 140]/255; defaults.marker = 'o'; defaults.linewidth = 2; defaults.linestyle = '-';
-                    case 'acqlcb'; defaults.color = [0 0 0]/255; defaults.marker = ''; defaults.linewidth = 2; defaults.linestyle = '-.';
+                    case 'acqlcb'; defaults.color = [0 0 0]/255; defaults.marker = ''; defaults.linewidth = 4; defaults.linestyle = '-.';
                     case 'lcbnearest'; defaults.color = [0 0 0]/255; defaults.marker = ''; defaults.linewidth = 4; defaults.linestyle = '-.';
                     case 'acqlcb_m5'; defaults.color = [0 0 0]/255; defaults.marker = '^'; defaults.linewidth = 2; defaults.linestyle = ':';
                     case 'acqpi'; defaults.color = [120 100 0]/255; defaults.marker = 's'; defaults.linewidth = 2; defaults.linestyle = '-.';
@@ -164,6 +164,7 @@ switch lower(type)
                     case 'base'; defaults.color = [188 128 189]/255; defaults.marker = 'o';
                     case 'noisy'; defaults.color = [255 128 189]/255; defaults.marker = '*';
                     case 'active'; defaults.color = [188 223 166]/255; defaults.marker = 'h';
+                    case 'actnoisy'; defaults.color = [188 223 166]/255; defaults.marker = 'h';
                 end
                 defaults.linewidth = 2;
                 defaults.linestyle = ':';
