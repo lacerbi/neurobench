@@ -98,7 +98,7 @@ for iRun = 1:length(idlist)
     probstruct.nIters = 0;
     FunCallsPerIter = 0;
     FirstPoint = [];    % First starting point of the run
-    x = []; fval = []; fse = []; t = []; zscore = [];
+    x = []; fval = []; fse = []; t = []; zscore = []; err = [];
     
     % Loop until out of budget of function evaluations
     while remainingFunEvals > 0
@@ -129,7 +129,9 @@ for iRun = 1:length(idlist)
                 isfield(history{iRun}.scratch,'fval') && isfield(history{iRun}.scratch,'fsd') && ...
                 ~isempty(probstruct.Noise) && ~probstruct.IntrinsicNoisy
             fval_true = benchmark_func(xnew,probstruct,1);
-            zscorenew = (fval_true - fvalnew) / history{iRun}.scratch.fsd;
+            errnew = (fval_true - fvalnew);
+            err = [err; errnew];
+            zscorenew = errnew / history{iRun}.scratch.fsd;
             zscore = [zscore; zscorenew];
         end        
         
@@ -186,6 +188,7 @@ for iRun = 1:length(idlist)
     history{iRun}.Output.fval = fval;
     history{iRun}.Output.fsd = fse;    
     history{iRun}.Output.t = t;
+    if ~isempty(err); history{iRun}.Output.err = err; end
     if ~isempty(zscore); history{iRun}.Output.zscore = zscore; end
     
     if isfield(history{iRun},'scratch'); scratch_flag = true; end

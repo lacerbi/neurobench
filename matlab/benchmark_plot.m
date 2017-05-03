@@ -222,6 +222,7 @@ for iFig = 1:nfigs
                 x = []; y = []; D = []; FunCallsPerIter = [];
                 AverageOverhead = zeros(1,numel(history));
                 FractionOverhead = [];
+                Zscores = [];
                 TotalElapsedTime = 0;
                 TotalFunctionTime = 0;
                 TotalTrials = 0;
@@ -319,7 +320,10 @@ for iFig = 1:nfigs
                         TotalFunctionTime = TotalFunctionTime + sum(history{i}.FuncTime(1:last))*speedfactor;
                         TotalTrials = TotalTrials + history{i}.SaveTicks(last);
                         FractionOverhead = [FractionOverhead, (history{i}.ElapsedTime(last)/sum(history{i}.FuncTime(1:last))-1)];
-
+                        if isfield(history{i}.Output,'zscore')
+                            Zscores = [Zscores, history{i}.Output.zscore(:)'];
+                        end
+                        
 %                         Noisy = 0;
 %                         if isfield(history{i},'Output')
 %                             if any(history{1}.Output.fsd(:) > 0); Noisy = 1; end
@@ -408,7 +412,10 @@ for iFig = 1:nfigs
                         (TotalElapsedTime - TotalFunctionTime)/TotalTrials;
                     benchdatanew.(field1).(field2).(field3).AverageFunTime = ...
                         TotalFunctionTime/TotalTrials;
-                    benchdatanew.(field1).(field2).(field3).FractionOverhead = mean(FractionOverhead);                    
+                    benchdatanew.(field1).(field2).(field3).FractionOverhead = mean(FractionOverhead);
+                    if ~isempty(Zscores)
+                        benchdatanew.(field1).(field2).(field3).Zscores = Zscores(:);
+                    end
                 end
                 
             end
