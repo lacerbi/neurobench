@@ -34,6 +34,14 @@ switch fig
             'CCN17 target detection/localization', ...
             'CCN17 combinatorial game playing'};
         noisyflag = 1;
+    % Supplementary Figures
+    case 11
+        folders = {'bbob09','bbob09','bbob09@hetnoise500D'};
+        titles = {'BBOB09 noiseless (BADS variants)', ...
+            'BBOB09 noiseless', ...
+            'BBOB09 with heteroskedastic noise'};
+        filenames = {'benchdata_bads1_eps','benchdata_1_eps','benchdata_1'};
+        noisyflag = [0 0 1];
 end
 
 %% Plot panels
@@ -56,6 +64,11 @@ if fig == 2
         ht = text(0.46,0.9,['<overhead> = ' num2str(overheads(iPanel)) '%'],'Units','normalized','HorizontalAlignment','left','FontSize',axesfontsize,'BackGroundColor','w');
         % uistack(ht,'top');
     end
+end
+
+if fig == 11
+    axes(hg(3));
+    ylabel('Fraction solved at 500×D fun evals');
 end
 
 %% Save

@@ -305,8 +305,12 @@ for iFig = 1:nfigs
                             last = find(isfinite(history{i}.ElapsedTime),1,'last');
                             last_first = find(diff(history{i}.ElapsedTime(1:last)) < 0,1);
                             if ~isempty(last_first); last = last_first; end
-                            AverageOverhead(i) = ...
-                                (history{i}.ElapsedTime(last) - sum(history{i}.FuncTime(1:last)))/history{1}.SaveTicks(last);
+                            try
+                                AverageOverhead(i) = ...
+                                    (history{i}.ElapsedTime(last) - sum(history{i}.FuncTime(1:last)))/history{1}.SaveTicks(last);
+                            catch
+                                pause
+                            end
                         end
                         
                         speedfactor = 8.2496/history{i}.speedtest;

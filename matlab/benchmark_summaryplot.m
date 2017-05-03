@@ -203,7 +203,7 @@ switch lower(options.Method)
         % xstring = 'Error tolerance from maximum LL';
         xstring = ['Error tolerance ' char(949)];
         if isfield(options,'FunEvalsPerD') && ~isempty(options.FunEvalsPerD)
-            ystring = ['Fraction solved at ' num2str(options.FunEvalsPerD) ' ×D fun evals'];
+            ystring = ['Fraction solved at ' num2str(options.FunEvalsPerD) '×D fun evals'];
         else
             ystring = 'Fraction solved';            
         end

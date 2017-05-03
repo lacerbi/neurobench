@@ -98,7 +98,7 @@ for iRun = 1:length(idlist)
     probstruct.nIters = 0;
     FunCallsPerIter = 0;
     FirstPoint = [];    % First starting point of the run
-    x = []; fval = []; fse = []; t = [];
+    x = []; fval = []; fse = []; t = []; zscore = [];
     
     % Loop until out of budget of function evaluations
     while remainingFunEvals > 0
@@ -123,6 +123,15 @@ for iRun = 1:length(idlist)
         
         algofun = str2func(['algorithm_' algo]);
         [history{iRun},xnew,fvalnew,algoptions] = algofun(algo,algoset,probstruct);   % Run optimization
+        
+        % Measure z-score of returned estimate for artificial noisy functions
+        if isfield(history{iRun},'scratch') && ...
+                isfield(history{iRun}.scratch,'fval') && isfield(history{iRun}.scratch,'fsd') && ...
+                ~isempty(probstruct.Noise) && ~probstruct.IntrinsicNoisy
+            fval_true = benchmark_func(xnew,probstruct,1);
+            zscorenew = (fval_true - fvalnew) / history{iRun}.scratch.fsd;
+            zscore = [zscore; zscorenew];
+        end        
         
         % Remove duplicate points from basket of candidate points
         index = duplicates(xnew,options.TolX);
@@ -177,6 +186,7 @@ for iRun = 1:length(idlist)
     history{iRun}.Output.fval = fval;
     history{iRun}.Output.fsd = fse;    
     history{iRun}.Output.t = t;
+    if ~isempty(zscore); history{iRun}.Output.zscore = zscore; end
     
     if isfield(history{iRun},'scratch'); scratch_flag = true; end
 end
