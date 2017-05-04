@@ -46,8 +46,8 @@ switch algoset
     case {35,'noscaling'}; algoset = 'noscaling'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.gpRescalePoll = 0;
     case {36,'fixednoise'}; algoset = 'fixednoise'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.MeshNoiseMultiplier = 0; algoptions.NoiseSize = algoptions.TolFun;
     case {37,'searcheye'}; algoset = 'searcheye'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.SearchMethod = {@searchES,3,1};
-    case {41,'lcbnearestfinal'}; algoset = 'lcbnearestfinal'; algoptions.Nfinalsamples = 8; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
-    case {42,'lcbnearestavg'}; algoset = 'lcbnearestavg'; algoptions.TrustGPfinal = 0; algoptions.Nfinalsamples = 15; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
+    case {41,'lcbnearestfinal'}; algoset = 'lcbnearestfinal'; algoptions.NoiseFinalSamples = 8; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
+    case {42,'lcbnearestavg'}; algoset = 'lcbnearestavg'; algoptions.TrustGPfinal = 0; algoptions.NoiseFinalSamples = 15; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
