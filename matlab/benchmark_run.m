@@ -133,7 +133,7 @@ for iRun = 1:length(idlist)
             err = [err; errnew];
             zscorenew = errnew / history{iRun}.scratch.fsd;
             zscore = [zscore; zscorenew];
-        end        
+        end
         
         % Remove duplicate points from basket of candidate points
         index = duplicates(xnew,options.TolX);
