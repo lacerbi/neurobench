@@ -52,12 +52,21 @@ if any(strcmp(ff,'yy'))
         summary.(fieldname).yy = yy + summary.(fieldname).yy;
         summary.(fieldname).n = summary.(fieldname).n + 1;
         summary.(fieldname).MinFval = min(summary.(fieldname).MinFval,MinFval);
+        if isfield(benchdata, 'Zscores')            
+            summary.(fieldname).Zscores = [summary.(fieldname).Zscores; benchdata.Zscores(:)];
+            summary.(fieldname).Errs = [summary.(fieldname).Errs; benchdata.Errs(:)];
+        end
     else
         summary.(fieldname).xrange = xrange;
         summary.(fieldname).yy = yy;
         summary.(fieldname).n = 1;
         summary.(fieldname).MinFval = MinFval;
+        if isfield(benchdata, 'Zscores')
+            summary.(fieldname).Zscores = benchdata.Zscores(:);
+            summary.(fieldname).Errs = benchdata.Errs(:);
+        end
     end
+    
 else
     for f = ff
         if isstruct(benchdata.(f{:}))

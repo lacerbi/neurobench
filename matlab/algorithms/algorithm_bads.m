@@ -8,6 +8,8 @@ algoptions.PollMeshMultiplier = 2;
 algoptions.PollAcqFcn = '@acqNegEI';
 algoptions.SearchAcqFcn = '@acqNegEI';
 algoptions.gpMethod = 'grid';
+algoptions.NoiseFinalSamples = 0;
+algoptions.TrustGPfinal = true;
 
 % Options from current problem
 algoptions.MaxFunEvals = probstruct.MaxFunEvals;
@@ -44,6 +46,8 @@ switch algoset
     case {35,'noscaling'}; algoset = 'noscaling'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.gpRescalePoll = 0;
     case {36,'fixednoise'}; algoset = 'fixednoise'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.MeshNoiseMultiplier = 0; algoptions.NoiseSize = algoptions.TolFun;
     case {37,'searcheye'}; algoset = 'searcheye'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}'; algoptions.SearchMethod = {@searchES,3,1};
+    case {41,'lcbnearestfinal'}; algoset = 'lcbnearestfinal'; algoptions.NoiseFinalSamples = 8; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
+    case {42,'lcbnearestavg'}; algoset = 'lcbnearestavg'; algoptions.TrustGPfinal = 0; algoptions.NoiseFinalSamples = 10; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
@@ -74,7 +78,7 @@ UB = probstruct.UpperBound;
 x0 = probstruct.InitPoint;
 D = size(x0,2);
 
-[x,fval,exitFlag,output] = ...
+[x,fval,exitFlag,output,optimState,gpstruct] = ...
     bads(@(x) benchmark_func(x,probstruct),x0,LB,UB,PLB,PUB,algoptions);
 history = benchmark_func(); % Retrieve history
 history.scratch = output;
