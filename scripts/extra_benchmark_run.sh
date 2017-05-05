@@ -9,17 +9,17 @@ JOBSCRIPT="${BASEDIR}/scripts/myjob.sh"
 RUN=${1}
 INPUTFILE="${SCRATCH}/${PROJECT}/joblist-${1}.txt"
 MAXID=$(sed -n $= ${INPUTFILE})
-RUNTIME=8:00:00
+RUNTIME=23:00:00
 MAXRT=NaN
 VERBOSE=0
 USEPRIOR=1
 TOLFUN="1e-3"
 STOPSUCCRUNS=1;
-MAXFUNMULT="[]"
+MAXFUNMULT="2.5";
 
 NODES="1"
 PPN="1"
-MEM="1500MB"
+MEM="3GB"
 RESOURCES="nodes=${NODES}:ppn=${PPN},mem=${MEM},walltime=${RUNTIME}"
 
 #if [[ -z ${1} ]]; then
