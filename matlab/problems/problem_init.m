@@ -85,6 +85,14 @@ if evalbool(options.ScaleVariables)
     end
 end
 
+% Enforce finite lower and upper bounds?
+if options.ForceFiniteBounds
+    idx = ~isfinite(probstruct.LowerBound);
+    probstruct.LowerBound = probstruct.InitRange(1,idx);
+    idx = ~isfinite(probstruct.UpperBound);
+    probstruct.UpperBound = probstruct.InitRange(2,idx);
+end
+
 if isfield(probstruct,'TrueMinFval') && isfinite(probstruct.TrueMinFval)
     display(['Known minimum function value: ' num2str(probstruct.TrueMinFval,'%.3f')]);
 end

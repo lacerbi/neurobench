@@ -20,6 +20,7 @@ switch lower(type)
         defaults.MaxFunEvalMultiplier = 1;      % Increase # func evals
         defaults.StopSuccessfulRuns = 1; % Stop runs when successful
         defaults.SpeedTests = 10;        % Iterations of speed tests
+        defaults.ForceFiniteBounds = 0;  % By default do not force finite bounds
     
         defaults.LineStyle = {'-','-','-','-','-.','-.','-.','-.','-.','-.','-.','-','-.','-','-','-','-','-'};
         % defaults.LineStyle = {'-','-.','-','-','-','-','-','-','-','-'};

@@ -68,7 +68,7 @@ end
 
 if fig == 11
     axes(hg(3));
-    ylabel('Fraction solved at 500×D fun evals');
+    ylabel('Fraction solved at 500×D func. evals.','FontSize',fontsize);
 end
 
 %% Save
