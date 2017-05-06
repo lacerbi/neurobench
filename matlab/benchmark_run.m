@@ -286,13 +286,12 @@ if ~isempty(probstruct.Noise) || probstruct.IntrinsicNoisy
             fval(iPoint) = benchmark_func(x_end,probstruct,1);
         else                                % Noisy function
             temp = zeros(1,probstruct.AvgSamples);
-            temp(1) = fval(iPoint);
-            for iSample = 2:probstruct.AvgSamples
+            for iSample = 1:probstruct.AvgSamples
                 temp(iSample) = benchmark_func(x_end,probstruct,1);
                 % If SE of current samples is less than TolFun,
-                % stop (collect at least four samples)
+                % stop (collect at least ten samples)
                 tempse = stderr(temp(1:iSample));
-                if iSample >= 4 && tempse < probstruct.TolFun; break; end
+                if iSample >= 10 && tempse < probstruct.TolFun; break; end
             end
             fval(iPoint) = nanmean(temp(1:iSample));
             fse(iPoint) = stderr(temp(1:iSample));

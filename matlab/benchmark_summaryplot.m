@@ -200,7 +200,7 @@ set(gcf,'Color','w');
 
 switch lower(options.Method)
     case 'ir'
-        xstring = 'Fun evals / Dim';
+        xstring = 'Func. evals. / Dim';
         ystring = 'Median IR';
     case 'fs'
         xstring = 'Function evaluations / D';
@@ -212,7 +212,7 @@ switch lower(options.Method)
         % xstring = 'Error tolerance from maximum LL';
         xstring = ['Error tolerance ' char(949)];
         if isfield(options,'FunEvalsPerD') && ~isempty(options.FunEvalsPerD)
-            ystring = ['Fraction solved at ' num2str(options.FunEvalsPerD) '×D fun evals'];
+            ystring = ['Fraction solved at ' num2str(options.FunEvalsPerD) '×D func. evals.'];
         else
             ystring = 'Fraction solved';            
         end
