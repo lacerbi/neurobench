@@ -1,6 +1,6 @@
 function [history,x,fval,algoptions] = algorithm_bayesopt(algo,algoset,probstruct)
 
-MaxIters = 500; % Maximum number of BO iterations
+MaxIters = 400; % Maximum number of BO iterations
 
 algoptions.AcquisitionFunctionName = 'expected-improvement-plus';
 algoptions.ExplorationRatio = 0.5;
