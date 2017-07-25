@@ -24,6 +24,14 @@ if nargin < 3 || isempty(debug); debug = 0; end
 if nargin < 4; iter = []; end
 if nargin < 5 || isempty(toffset); toffset = 0; end
 
+if exist('istable','file') == 2 && istable(x)
+    xnew = zeros(size(x));
+    for iVar = 1:numel(x)
+        xnew(iVar) = x.(['x' num2str(iVar)]);
+    end
+    x = xnew;
+end
+
 % Update current run number
 if debug && ~isempty(iter)
     if iter > 1
@@ -37,7 +45,6 @@ if debug && ~isempty(iter)
     end
     return;
 end
-
 
 x = x(:)';  % Row vector in
 
