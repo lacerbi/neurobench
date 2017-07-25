@@ -19,7 +19,7 @@ MAXFUNMULT="[]"
 
 NODES="1"
 PPN="1"
-MEM="3GB"
+MEM="2GB"
 RESOURCES="nodes=${NODES}:ppn=${PPN},mem=${MEM},walltime=${RUNTIME}"
 
 #if [[ -z ${1} ]]; then
