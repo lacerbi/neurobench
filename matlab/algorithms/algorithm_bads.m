@@ -49,6 +49,7 @@ switch algoset
     case {41,'lcbnearestfinal'}; algoset = 'lcbnearestfinal'; algoptions.NoiseFinalSamples = 8; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
     case {42,'lcbnearestavg'}; algoset = 'lcbnearestavg'; algoptions.TrustGPfinal = 0; algoptions.NoiseFinalSamples = 10; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
     case {43,'lcbnearestwarp'}; algoset = 'lcbnearestwarp'; algoptions.InputWarping = 1; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
+    case {44,'lcbnearestwarpalt'}; algoset = 'lcbnearestwarpalt'; algoptions.InputWarping = 1; algoptions.InputWarpStart = 'min(ceil(250*sqrt(nvars/15)),300)'; algoptions.gpMethod = 'nearest'; algoptions.PollAcqFcn = '{@acqLCB,[]}'; algoptions.SearchAcqFcn = '{@acqLCB,[]}';
     case {100,'noisy'}; algoset = 'noisy'; algoptions.UncertaintyHandling = 1;
     otherwise
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);

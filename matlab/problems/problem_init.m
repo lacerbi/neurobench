@@ -74,7 +74,7 @@ catch
     warning('Could not load optimum location/value from file.');
 end
 
-% Center and rescale variables
+% Center and rescale variables (potentially transforms to log space)
 if evalbool(options.ScaleVariables)
     probstruct.trinfo = transvars(probstruct.D,probstruct.LowerBound,probstruct.UpperBound,probstruct.InitRange(1,:),probstruct.InitRange(2,:));
     probstruct.LowerBound = probstruct.trinfo.lb(:)';
