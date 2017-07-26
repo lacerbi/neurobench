@@ -31,7 +31,7 @@ else
 end
 
 % Acquisition function depends on whether computation time is fixed
-if probstruct.VariableComputationTime
+if isfield(probstruct,'VariableComputationTime') && probstruct.VariableComputationTime
     algoptions.AcquisitionFunctionName = 'expected-improvement-per-second-plus';
 else
     algoptions.AcquisitionFunctionName = 'expected-improvement-plus';
