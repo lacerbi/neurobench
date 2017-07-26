@@ -74,6 +74,7 @@ switch probstruct.Family
         probstruct.MaxFunEvals = 200*length(probstruct.LowerBound);
         probstruct.IntrinsicNoisy = 1;  % Noisy problem        
         probstruct.AvgSamples = 200;    % Samples at the end of run
+        probstruct.VariableComputationTime = true;
 
     case 'adler2016' % Will T. Adler Bayesian confidence model
         probstruct = loadprob(probstruct,'confidence_wrapper',S);
@@ -88,6 +89,7 @@ switch probstruct.Family
         probstruct.AvgSamples = 200;    % Samples at the end of run
         probstruct.CandidateX = 10;     % Number of candidate points
         probstruct.LocalDataFile = 'times.txt';
+        probstruct.VariableComputationTime = true;
 
     case 'targetloc'    % Mihali et al. (in preparation) target localization
         probstruct = loadprob(probstruct,'targetloc_wrapper',S);
@@ -108,7 +110,7 @@ switch probstruct.Family
         probstruct = loadprob(probstruct,func,nBas);
         probstruct.MaxFunEvals = 200;
         probstruct.AvgSamples = 200;    % Samples at the end of run
-        
+        probstruct.VariableComputationTime = true;        
         
 end
 

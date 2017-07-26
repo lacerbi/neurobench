@@ -61,7 +61,8 @@ switch lower(type)
         defaults.CandidateX = 3;            % Maximum candidate best point per optimization iteration 
         defaults.TrueMinFval = NaN;
         defaults.LocalDataFile = [];        % Local data file to be moved to each local folder
-
+        defaults.VariableComputationTime = false;   % For most problems, computation time is (virtually) constant
+        
     case {'plot'}
         defaults.BestOutOf = 1;
         defaults.NumZero = 1e-3;

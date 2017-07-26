@@ -2,7 +2,6 @@ function [history,x,fval,algoptions] = algorithm_bayesopt(algo,algoset,probstruc
 
 MaxIters = 300; % Maximum number of BO iterations
 
-algoptions.AcquisitionFunctionName = 'expected-improvement-plus';
 algoptions.ExplorationRatio = 0.5;
 
 algoptions.NumSeedPoints = 4;
@@ -24,17 +23,19 @@ switch algoset
         error(['Unknown algorithm setting ''' algoset ''' for algorithm ''' algo '''.']);
 end
 
-% Increase base noise with noisy functions
+% Deterministic or noisy functions
 if ~isempty(probstruct.Noise) || probstruct.IntrinsicNoisy
     algoptions.IsObjectiveDeterministic = false;
 else
     algoptions.IsObjectiveDeterministic = true;
 end
 
-% Variables with periodic boundary
-%if isfield(probstruct, 'PeriodicVars')
-%    algoptions.PeriodicVars = probstruct.PeriodicVars;
-%end
+% Acquisition function depends on whether computation time is fixed
+if probstruct.VariableComputationTime
+    algoptions.AcquisitionFunctionName = 'expected-improvement-per-second-plus';
+else
+    algoptions.AcquisitionFunctionName = 'expected-improvement-plus';
+end
 
 % Variables are already rescaled by BENCHMARK
 
@@ -66,7 +67,7 @@ for iter = 1:min(algoptions.MaxObjectiveEvaluations, algoptions.NumSeedPoints)
 end
 
 % Best initial point
-if numel(fvalsinit) > 1
+if numel(fvalsinit) > 0
     [fval,idx] = min(fvalsinit);
     x = x0(idx,:);
 end
@@ -90,16 +91,21 @@ if algoptions.MaxObjectiveEvaluations > 1
         'InitialConstraintViolations', [], ...
         'InitialObjectiveEvaluationTimes', t ...
     );
-end
 
-% Return best observed point
-x(1,:) = table2array(results.XAtMinObjective);
-fval(1,:) = results.MinObjective;
+    % Return best observed point
+    [xtab, ~, iter1] = bestPoint(results, 'Criterion', 'min-observed');
+    x(1,:) = table2array(xtab);
+    fval(1,:) = results.ObjectiveTrace(iter1,:);    
+    
+    % For noisy functions also return best estimated point
+    if ~algoptions.IsObjectiveDeterministic
+        [xtab, ~, iter2] = bestPoint(results, 'Criterion', 'min-visited-upper-confidence-interval', 'Alpha', 0.01);
+        if iter2 ~= iter1
+            x(2,:) = table2array(xtab);
+            fval(2,:) = results.ObjectiveTrace(iter2,:);
+        end
+    end
 
-% For noisy functions also return best estimated point
-if ~algoptions.IsObjectiveDeterministic
-    x(2,:) = table2array(results.XAtMinEstimatedObjective);
-    fval(2,:) = results.MinEstimatedObjective;
 end
 
 history = benchmark_func(); % Retrieve history
