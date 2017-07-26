@@ -92,11 +92,15 @@ if algoptions.MaxObjectiveEvaluations > 1
     );
 end
 
-% Return best observed point and best estimated point
+% Return best observed point
 x(1,:) = table2array(results.XAtMinObjective);
 fval(1,:) = results.MinObjective;
-x(2,:) = table2array(results.XAtMinEstimatedObjective);
-fval(2,:) = results.MinEstimatedObjective;
+
+% For noisy functions also return best estimated point
+if ~algoptions.IsObjectiveDeterministic
+    x(2,:) = table2array(results.XAtMinEstimatedObjective);
+    fval(2,:) = results.MinEstimatedObjective;
+end
 
 history = benchmark_func(); % Retrieve history
 history.scratch = results;
