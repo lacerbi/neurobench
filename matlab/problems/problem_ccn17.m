@@ -114,7 +114,7 @@ end
 
 % Update lower/upper bounds for periodic variables for non-BPS algorithms
 if isfield(probstruct,'PeriodicVars') && ~isempty(probstruct.PeriodicVars) ...
-        && ~any(strcmpi(options.Algorithm, {'bps','bads'})) 
+        && ~any(strcmpi(options.Algorithm, {'bps','bads','bayesopt'})) 
     %probstruct.LowerBound(probstruct.PeriodicVars) = probstruct.LowerBound(probstruct.PeriodicVars)*20;
     %probstruct.UpperBound(probstruct.PeriodicVars) = probstruct.UpperBound(probstruct.PeriodicVars)*20;
     probstruct.LowerBound(probstruct.PeriodicVars) = -Inf;
