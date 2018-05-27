@@ -195,6 +195,11 @@ switch lower(type)
                 defaults.linestyle = ':';
                 defaults.marker = '.';                
                 
+            case 'bayesopt'
+                defaults.color = [250 120 150]/255;
+                defaults.linewidth = 2;
+                defaults.linestyle = '-.';
+                defaults.marker = 'o';
                 
         end
         
